@@ -9,6 +9,10 @@ import com.aroundu.core.model.Person;
 import com.aroundu.core.repopsitories.PersonRepositoryBean;
 import com.aroundu.core.supports.Utility;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class PersonServiceBean extends ServiceBean {
 
 	private PersonRepositoryBean personRepositoryBean;

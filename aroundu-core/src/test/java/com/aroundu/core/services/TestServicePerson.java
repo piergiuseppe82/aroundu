@@ -13,6 +13,10 @@ import com.aroundu.core.infrastructure.ServiceBeanFactory;
 import com.aroundu.core.model.Person;
 
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class TestServicePerson {
 	private ServiceBeanFactory factory;
 	

@@ -12,6 +12,10 @@ import org.neo4j.graphdb.Result;
 import com.aroundu.core.model.Person;
 import com.aroundu.core.model.Post;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class RepoAssemblers {
 	
 	public static Collection<Person> toPersonCollection(ResourceIterator<Node> findNodes) {

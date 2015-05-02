@@ -11,6 +11,10 @@ import com.aroundu.core.model.Post;
 import com.aroundu.core.repopsitories.PersonRepositoryBean;
 import com.aroundu.core.repopsitories.PostRepositoryBean;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class PostServiceBean extends ServiceBean {
 	private PostRepositoryBean postRepositoryBean;
 	private PersonRepositoryBean personRepositoryBean;

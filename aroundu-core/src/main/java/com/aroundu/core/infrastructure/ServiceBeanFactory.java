@@ -4,6 +4,10 @@ import com.aroundu.core.services.PersonServiceBean;
 import com.aroundu.core.services.PostServiceBean;
 import com.aroundu.core.supports.Utility;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class ServiceBeanFactory extends Factory{
 	
 	private static ServiceBeanFactory instance;

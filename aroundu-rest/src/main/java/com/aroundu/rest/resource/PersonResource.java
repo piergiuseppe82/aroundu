@@ -19,6 +19,10 @@ import com.aroundu.core.infrastructure.ServiceBeanFactory;
 import com.aroundu.core.model.Person;
 import com.aroundu.core.services.PersonServiceBean;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 @Path("/profiles")
 public class PersonResource {
     

@@ -1,6 +1,10 @@
 package com.aroundu.core.model;
 
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class Post  extends AroundUNodeEntity {
 
     

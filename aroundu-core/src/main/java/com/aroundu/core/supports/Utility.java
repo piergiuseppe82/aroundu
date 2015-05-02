@@ -4,6 +4,10 @@ import java.io.File;
 import java.security.MessageDigest;
 
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class Utility {
 	
 	public static String getDataPath(){

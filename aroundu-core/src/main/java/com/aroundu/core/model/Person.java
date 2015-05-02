@@ -2,6 +2,10 @@ package com.aroundu.core.model;
 
 
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class Person  extends AroundUNodeEntity {
 
     

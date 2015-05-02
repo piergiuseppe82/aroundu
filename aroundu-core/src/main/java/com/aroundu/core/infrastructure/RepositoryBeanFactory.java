@@ -7,6 +7,10 @@ import com.aroundu.core.repopsitories.IndexRepositoryBean;
 import com.aroundu.core.repopsitories.PersonRepositoryBean;
 import com.aroundu.core.repopsitories.PostRepositoryBean;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class RepositoryBeanFactory extends Factory{
 	private static GraphDatabaseService graphDb; 
 	private static RepositoryBeanFactory factoryInstace;

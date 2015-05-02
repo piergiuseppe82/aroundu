@@ -7,6 +7,10 @@ import org.neo4j.graphdb.RelationshipType;
 import com.aroundu.core.model.AroundUNodeEntity;
 import com.aroundu.core.repopsitories.IndexRepositoryBean;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public abstract class RepositoryBean extends Bean{
 	
 	public static enum RelTypes implements RelationshipType

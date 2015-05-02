@@ -13,6 +13,10 @@ import com.aroundu.core.infrastructure.RepositoryBean;
 import com.aroundu.core.model.Person;
 import com.aroundu.core.supports.RepoAssemblers;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class PersonRepositoryBean extends RepositoryBean{
 	
 	

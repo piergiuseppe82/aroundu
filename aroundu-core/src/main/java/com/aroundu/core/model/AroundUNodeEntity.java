@@ -2,6 +2,10 @@ package com.aroundu.core.model;
 
 import java.io.Serializable;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public abstract class AroundUNodeEntity implements Serializable{
 	
 	

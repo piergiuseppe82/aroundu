@@ -8,6 +8,10 @@ import org.neo4j.graphdb.index.Index;
 
 import com.aroundu.core.infrastructure.RepositoryBean;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public class IndexRepositoryBean extends RepositoryBean{
 	
 	private Index<Node> geom = null;

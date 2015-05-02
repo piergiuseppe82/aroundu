@@ -3,6 +3,10 @@ package com.aroundu.core.infrastructure;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author piergiuseppe82
+ *
+ */
 public abstract class Factory {
 	private static Map<String,Bean> beanMap =new HashMap<String,Bean>();
 	
