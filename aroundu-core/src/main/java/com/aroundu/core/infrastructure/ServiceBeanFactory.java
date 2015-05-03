@@ -1,7 +1,7 @@
 package com.aroundu.core.infrastructure;
 
-import com.aroundu.core.services.PersonServiceBean;
-import com.aroundu.core.services.PostServiceBean;
+import com.aroundu.core.services.UserServiceBean;
+import com.aroundu.core.services.EventServiceBean;
 import com.aroundu.core.supports.Utility;
 
 /**
@@ -17,44 +17,55 @@ public class ServiceBeanFactory extends Factory{
 		
 	}
 	
-	private ServiceBeanFactory(String dbpath){
-		repositoryBeanFactory = RepositoryBeanFactory.instance(dbpath);            
+	private ServiceBeanFactory(String dbpath, boolean destroy){
+		repositoryBeanFactory = RepositoryBeanFactory.instance(dbpath,destroy);            
 	}	
 	
 	public static ServiceBeanFactory getInstance(String dbpath) {
 		if(instance==null){
 			synchronized (ServiceBeanFactory.class){
 				if(instance==null)
-					instance = new ServiceBeanFactory(dbpath);
+					instance = new ServiceBeanFactory(dbpath,false);
 			}
 		}			
 		return instance;
 	}
+	
+	public static ServiceBeanFactory getInstance(String dbpath,boolean destroy) {
+		if(instance==null){
+			synchronized (ServiceBeanFactory.class){
+				if(instance==null)
+					instance = new ServiceBeanFactory(dbpath,destroy);
+			}
+		}			
+		return instance;
+	}
+	
 	
 	public static ServiceBeanFactory getInstance() {
 		return getInstance(Utility.getDataPath());
 	}
 	
 	
-	public PersonServiceBean getPersonServiceBean(){
-		return (PersonServiceBean)getBean(PersonServiceBean.class);
+	public UserServiceBean getUserServiceBean(){
+		return (UserServiceBean)getBean(UserServiceBean.class);
 		
 	}
-	public PostServiceBean getPostServiceBean(){
-		return (PostServiceBean)getBean(PostServiceBean.class);
+	public EventServiceBean getEventServiceBean(){
+		return (EventServiceBean)getBean(EventServiceBean.class);
 	}
 
 	@Override
 	void manageInjection(Bean beanInstance) {
-		if (beanInstance instanceof PostServiceBean) {
-			PostServiceBean bean = (PostServiceBean) beanInstance;
-			bean.setPersonRepositoryBean(repositoryBeanFactory.getPersonRepositoryBean());
-			bean.setPostRepositoryBean(repositoryBeanFactory.getPostRepositoryBean());
+		if (beanInstance instanceof EventServiceBean) {
+			EventServiceBean bean = (EventServiceBean) beanInstance;
+			bean.setUserRepositoryBean(repositoryBeanFactory.getUserRepositoryBean());
+			bean.setEventRepositoryBean(repositoryBeanFactory.getEventRepositoryBean());
 		}
 		
-		if (beanInstance instanceof PersonServiceBean) {
-			PersonServiceBean bean = (PersonServiceBean) beanInstance;
-			bean.setPersonRepositoryBean(repositoryBeanFactory.getPersonRepositoryBean());
+		if (beanInstance instanceof UserServiceBean) {
+			UserServiceBean bean = (UserServiceBean) beanInstance;
+			bean.setUserRepositoryBean(repositoryBeanFactory.getUserRepositoryBean());
 		}
 		
 	}

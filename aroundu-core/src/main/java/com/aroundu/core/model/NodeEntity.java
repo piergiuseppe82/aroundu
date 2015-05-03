@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author piergiuseppe82
  *
  */
-public abstract class AroundUNodeEntity implements Serializable{
+public abstract class NodeEntity implements Serializable{
 	
 	
 	

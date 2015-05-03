@@ -21,9 +21,14 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> resources = new java.util.HashSet<>();
         
         resources.add(org.glassfish.jersey.moxy.json.MoxyJsonFeature.class);
+        resources.add(com.aroundu.rest.filters.ResponseHeaderFilter.class);
         resources.add(com.aroundu.rest.provider.JsonMoxyConfigurationContextResolver.class);
-        resources.add(com.aroundu.rest.resource.PersonResource.class);
-        
+        resources.add(com.aroundu.rest.resource.AuthResource.class);
+        resources.add(com.aroundu.rest.resource.PrivateResource.class);
+        resources.add(com.aroundu.rest.resource.SetupResource.class);
+        resources.add(com.aroundu.rest.resource.UserResource.class);
+        resources.add(com.aroundu.rest.resource.EventsResource.class);
+      
         return resources;
     }
     
