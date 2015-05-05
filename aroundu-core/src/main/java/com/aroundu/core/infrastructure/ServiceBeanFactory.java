@@ -43,7 +43,7 @@ public class ServiceBeanFactory extends Factory{
 	
 	
 	public static ServiceBeanFactory getInstance() {
-		return getInstance(Utility.getDataPath());
+		return getInstance(Utility.getGraphDBPath());
 	}
 	
 	
@@ -61,11 +61,13 @@ public class ServiceBeanFactory extends Factory{
 			EventServiceBean bean = (EventServiceBean) beanInstance;
 			bean.setUserRepositoryBean(repositoryBeanFactory.getUserRepositoryBean());
 			bean.setEventRepositoryBean(repositoryBeanFactory.getEventRepositoryBean());
+			bean.setImageRepositoryBean(repositoryBeanFactory.getImageRepositoryBean());
 		}
 		
 		if (beanInstance instanceof UserServiceBean) {
 			UserServiceBean bean = (UserServiceBean) beanInstance;
 			bean.setUserRepositoryBean(repositoryBeanFactory.getUserRepositoryBean());
+			bean.setImageRepositoryBean(repositoryBeanFactory.getImageRepositoryBean());
 		}
 		
 	}

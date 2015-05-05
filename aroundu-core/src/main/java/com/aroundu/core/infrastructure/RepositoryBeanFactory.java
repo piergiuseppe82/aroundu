@@ -7,6 +7,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.io.fs.FileUtils;
 
+import com.aroundu.core.repopsitories.ImageRepositoryBean;
 import com.aroundu.core.repopsitories.IndexRepositoryBean;
 import com.aroundu.core.repopsitories.UserRepositoryBean;
 import com.aroundu.core.repopsitories.EventRepositoryBean;
@@ -62,6 +63,10 @@ public class RepositoryBeanFactory extends Factory{
 	
 	public IndexRepositoryBean getIndexRepositoryBean(){
 		return (IndexRepositoryBean) getBean(IndexRepositoryBean.class);
+	}
+	
+	public ImageRepositoryBean getImageRepositoryBean(){
+		return (ImageRepositoryBean) getBean(ImageRepositoryBean.class);
 	}
 	
 	

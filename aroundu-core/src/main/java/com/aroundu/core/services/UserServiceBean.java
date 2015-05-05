@@ -7,6 +7,7 @@ import org.neo4j.graphdb.Transaction;
 import com.aroundu.core.infrastructure.ServiceBean;
 import com.aroundu.core.model.User;
 import com.aroundu.core.repopsitories.UserRepositoryBean;
+import com.aroundu.core.repopsitories.ImageRepositoryBean.ImageDimesionType;
 import com.aroundu.core.supports.Utility;
 
 /**
@@ -29,12 +30,17 @@ public class UserServiceBean extends ServiceBean {
 
 
 	
-	public User addUser(User p){
+	public User addUser(User user){
 		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
-			p.setPassword(Utility.passwordEncode(p.getPassword()));
-			userRepositoryBean.createUser(p);
+			user.setPassword(Utility.passwordEncode(user.getPassword()));
+			String image = user.getProfileImage();
+			if(image != null && !image.isEmpty()){
+				String urlImage = getImageRepositoryBean().saveImage(image, ImageDimesionType.PROFILE_IMAGE, user.getUsername());
+				user.setProfileImageUrl(urlImage);
+			}
+			userRepositoryBean.createUser(user);
 			tx.success();
-			return p;
+			return user;
 		}catch(Throwable t){
 			t.printStackTrace();
 		}	

@@ -10,6 +10,7 @@ import com.aroundu.core.model.User;
 import com.aroundu.core.model.Event;
 import com.aroundu.core.repopsitories.UserRepositoryBean;
 import com.aroundu.core.repopsitories.EventRepositoryBean;
+import com.aroundu.core.repopsitories.ImageRepositoryBean.ImageDimesionType;
 
 /**
  * @author piergiuseppe82
@@ -43,8 +44,11 @@ public class EventServiceBean extends ServiceBean {
 	public Event addEvent(Event event){
 		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
 			Long userid = event.getAuthor().getId();
-			User user = userRepositoryBean.findUser(userid);
+			User user = userRepositoryBean.findUser(userid);			
 			if(user != null){
+				String image = event.getEventImage();
+				String eventUrlThum = getImageRepositoryBean().saveImage(image, ImageDimesionType.THUMBNAILS_IMAGE, user.getUsername());
+				event.setEventImageUrl(eventUrlThum);
 				event = eventRepositoryBean.createEvent(event);
 				userRepositoryBean.createRelationshipTo(user, event, RepositoryBean.RelTypes.POST );
 				tx.success();

@@ -10,11 +10,19 @@ import java.security.MessageDigest;
  */
 public class Utility {
 	
-	public static String getDataPath(){
+	public static String getDataDirectoryPath(){
 		if(System.getenv("OPENSHIFT_DATA_DIR") != null)
 			return System.getenv("OPENSHIFT_DATA_DIR");
 		else
-			return System.getProperty("user.home")+File.separator+"neo4jdb";
+			return System.getProperty("user.home");
+	}
+	
+	public static String getGraphDBPath(){
+		return getDataDirectoryPath()+File.separator+"neo4jdb";
+	}
+	
+	public static String getImagesDirectoryPath(){
+		return Utility.getDataDirectoryPath()+File.separator+"media"+File.separator+"images";
 	}
 	
 	

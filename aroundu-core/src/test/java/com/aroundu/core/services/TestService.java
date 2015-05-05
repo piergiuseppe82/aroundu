@@ -29,7 +29,7 @@ public abstract class TestService {
 		p.setFullName(username+"_fn");
 		p.setPassword(username+"_pw");
 		p.setDisplayName(username+"_dn");
-		p.setProfileImageUrl(username+"_img_url");
+		p.setProfileImage(MediaFilesMock.IMAGE_64_X_64);
 		return p;
 	}
 	
@@ -46,6 +46,7 @@ public abstract class TestService {
 			event.setLongitude(longitude!=null?longitude:12.6594818);
 		}	
 		event.setEventImageUrl(title+"_image_url");
+		event.setEventImage(MediaFilesMock.IMAGE_64_X_64);
 		event.setTitle(title);
 		event.setAddress(title+"_add");
 		return event;
