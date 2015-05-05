@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.aroundu.core.services;
+package com.aroundu.core.services.utilities;
 
 /**
  * @author piergiuseppe82

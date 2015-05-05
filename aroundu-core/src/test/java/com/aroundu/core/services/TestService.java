@@ -9,6 +9,7 @@ import org.junit.Before;
 import com.aroundu.core.infrastructure.ServiceBeanFactory;
 import com.aroundu.core.model.Event;
 import com.aroundu.core.model.User;
+import com.aroundu.core.services.utilities.MediaFilesMock;
 
 /**
  * @author piergiuseppe82
