@@ -36,7 +36,7 @@ public class SetupResource {
     	
     	
         OAuth2ClientIdStore.setClientIdentifier(new ClientIdentifier(consumerKey, consumerSecret));
-        final URI uri = UriBuilder.fromUri(uriInfo.getBaseUri()).path("private")
+        final URI uri = UriBuilder.fromUri(uriInfo.getBaseUri()).path("googleinfo/profile")
                 .build();
 
         return Response.seeOther(uri).build();

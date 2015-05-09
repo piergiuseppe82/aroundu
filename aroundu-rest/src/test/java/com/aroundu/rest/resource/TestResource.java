@@ -3,8 +3,12 @@
  */
 package com.aroundu.rest.resource;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 import com.aroundu.core.model.Event;
 import com.aroundu.core.model.User;
+import com.aroundu.core.services.utilities.MediaFilesMock;
 
 /**
  * @author piergiuseppe82
@@ -15,10 +19,22 @@ public abstract class TestResource {
 		User p = new User();
 		p.setUsername(username);
 		p.setEmail(username+"@"+username+".com");
-		p.setFullName(username+"_fn");
+		p.setDisplayName(username+"_fn");
 		p.setPassword(username+"_pw");
 		p.setDisplayName(username+"_dn");
-		p.setProfileImageUrl(username+"_img_url");
+		p.setImage(MediaFilesMock.IMAGE_64_X_64);
+//		p.setToken(new BigInteger(130, new SecureRandom()).toString(8));
+		return p;
+	}
+	
+	protected User makeFakeUserToken() {
+		User p = new User();
+		p.setUsername("112017354008475255989@GOOGLE");
+		p.setEmail("piergiuseppe82@gmail.com");
+		p.setDisplayName("piergiuseppe la cava");
+		p.setAuth_domain("GOOGLE");
+		
+//		p.setToken(new BigInteger(130, new SecureRandom()).toString(8));
 		return p;
 	}
 	
@@ -26,10 +42,11 @@ public abstract class TestResource {
 		User p = new User();
 		p.setUsername(username);
 		p.setEmail(username+"@"+username+".com");
-		p.setFullName(username+"_fn");
+		p.setDisplayName(username+"_fn");
 		p.setPassword(username+"_pw");
 		p.setDisplayName(username+"_dn");
-		p.setProfileImageUrl(username+"_img_url");
+		p.setImage(MediaFilesMock.IMAGE_64_X_64);
+//		p.setToken(new BigInteger(130, new SecureRandom()).toString(8));
 		return p;
 	}
 	

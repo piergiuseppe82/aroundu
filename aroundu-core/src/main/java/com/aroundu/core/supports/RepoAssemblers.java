@@ -57,17 +57,20 @@ public class RepoAssemblers {
 		bean.setDisplayName((String)node.getProperty("displayName"));
 		bean.setCreationTime((long)node.getProperty("creationTime"));
 		bean.setEmail((String)node.getProperty("email"));
-		bean.setFullName((String)node.getProperty("fullName"));
 		bean.setId(node.getId());
-//		bean.setPassword((String)node.getProperty("password"));
 		bean.setUpdateTime((long)node.getProperty("updateTime"));
-		bean.setProfileImageUrl((String)node.getProperty("profileImageUrl"));
+		bean.setAuth_domain((String)node.getProperty("auth_domain"));
+		bean.setBackground((String)node.getProperty("background"));
+		bean.setExpiretime((long)node.getProperty("expiretime"));
+		bean.setThumbnail((String)node.getProperty("thumbnail"));
+		bean.setToken((String)node.getProperty("token"));
+		
 	}
 	
 	public static void nodeToBeanShort(Node node, User bean) {
 		bean.setDisplayName((String)node.getProperty("displayName"));
 		bean.setId(node.getId());
-		bean.setProfileImageUrl((String)node.getProperty("profileImageUrl"));
+		bean.setThumbnail((String)node.getProperty("thumbnail"));
 	}
 	
 	public static void beanToNode(User bean, Node node) {
@@ -76,10 +79,13 @@ public class RepoAssemblers {
 		node.setProperty( "creationTime", bean.getCreationTime());
 		node.setProperty( "updateTime", bean.getUpdateTime());
 		node.setProperty( "email",  bean.getEmail());		
-		node.setProperty( "fullName",  bean.getFullName());		
-		node.setProperty( "password", bean.getPassword());
-		node.setProperty( "profileImageUrl", bean.getProfileImageUrl()!=null?bean.getProfileImageUrl():"");
+		node.setProperty( "password", bean.getPassword()!=null?bean.getPassword():"");
+		node.setProperty( "thumbnail", bean.getThumbnail()!=null?bean.getThumbnail():"");
 		node.setProperty( "displayName", bean.getDisplayName());
+		node.setProperty( "auth_domain",  bean.getAuth_domain()!=null?bean.getAuth_domain():"");
+		node.setProperty( "background",  bean.getBackground()!=null?bean.getBackground():"");
+		node.setProperty( "expiretime",  bean.getExpiretime());
+		node.setProperty( "token",  bean.getToken());
 	}
 	
 	public static void beanToNode(Event bean, Node node) {

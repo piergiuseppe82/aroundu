@@ -66,6 +66,15 @@ public class UserRepositoryBean extends RepositoryBean{
 			return p;
 		}return null;
 	}
+
+	public User findUserByToken(String token) {
+		Node node = getGraphDatabaseServices().findNode(DynamicLabel.label(User.class.getSimpleName()), "token", token);
+		if(node != null){
+			User p = new User();
+			RepoAssemblers.nodeToBean(node, p);
+			return p;
+		}return null;
+	}
 	
 	public User findUser(long id) {
 		Node nodeById = getGraphDatabaseServices().getNodeById(id);

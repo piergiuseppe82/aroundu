@@ -3,6 +3,9 @@
  */
 package com.aroundu.core.services;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 import org.junit.Assert;
 import org.junit.Before;
 
@@ -10,6 +13,7 @@ import com.aroundu.core.infrastructure.ServiceBeanFactory;
 import com.aroundu.core.model.Event;
 import com.aroundu.core.model.User;
 import com.aroundu.core.services.utilities.MediaFilesMock;
+import com.aroundu.core.supports.Utility;
 
 /**
  * @author piergiuseppe82
@@ -27,10 +31,11 @@ public abstract class TestService {
 		User p = new User();
 		p.setUsername(username);
 		p.setEmail(username+"@"+username+".com");
-		p.setFullName(username+"_fn");
+		p.setDisplayName(username+"_fn");
 		p.setPassword(username+"_pw");
 		p.setDisplayName(username+"_dn");
-		p.setProfileImage(MediaFilesMock.IMAGE_64_X_64);
+		p.setImage(MediaFilesMock.IMAGE_64_X_64);
+		p.setToken(new BigInteger(130, new SecureRandom()).toString(8));
 		return p;
 	}
 	

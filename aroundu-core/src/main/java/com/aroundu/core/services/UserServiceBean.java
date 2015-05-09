@@ -32,11 +32,12 @@ public class UserServiceBean extends ServiceBean {
 	
 	public User addUser(User user){
 		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
-			user.setPassword(Utility.passwordEncode(user.getPassword()));
-			String image = user.getProfileImage();
+			if(user.getAuth_domain() == null || user.getAuth_domain().isEmpty()) user.setPassword(Utility.passwordEncode(user.getPassword()));
+			
+			String image = user.getImage();
 			if(image != null && !image.isEmpty()){
 				String urlImage = getImageRepositoryBean().saveImage(image, ImageDimesionType.PROFILE_IMAGE, user.getUsername());
-				user.setProfileImageUrl(urlImage);
+				user.setThumbnail(urlImage);
 			}
 			userRepositoryBean.createUser(user);
 			tx.success();
@@ -47,6 +48,8 @@ public class UserServiceBean extends ServiceBean {
 		return null;
 	}
 	
+
+
 	public Collection<User> getAllUser(){
 		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
 			Collection<User> plist = userRepositoryBean.findAll();
@@ -104,5 +107,21 @@ public class UserServiceBean extends ServiceBean {
 			t.printStackTrace();
 		}
 		return false;
+	}
+
+
+	/**
+	 * @param checkUser
+	 */
+	public User checkUser(String token) {
+		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
+			User pN = userRepositoryBean.findUserByToken(token);
+			tx.success();
+			return pN;
+		}catch(Throwable t){
+			t.printStackTrace();
+		}
+		return null;
+		
 	}
 }

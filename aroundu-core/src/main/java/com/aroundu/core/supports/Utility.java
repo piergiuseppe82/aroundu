@@ -12,17 +12,17 @@ public class Utility {
 	
 	public static String getDataDirectoryPath(){
 		if(System.getenv("OPENSHIFT_DATA_DIR") != null)
-			return System.getenv("OPENSHIFT_DATA_DIR");
+			return System.getenv("OPENSHIFT_DATA_DIR")+File.separator;
 		else
-			return System.getProperty("user.home");
+			return System.getProperty("user.home")+File.separator;
 	}
 	
 	public static String getGraphDBPath(){
-		return getDataDirectoryPath()+File.separator+"neo4jdb";
+		return getDataDirectoryPath()+"neo4j.db";
 	}
 	
 	public static String getImagesDirectoryPath(){
-		return Utility.getDataDirectoryPath()+File.separator+"media"+File.separator+"images";
+		return Utility.getDataDirectoryPath()+"media"+File.separator+"images";
 	}
 	
 	

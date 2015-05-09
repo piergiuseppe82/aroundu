@@ -28,9 +28,15 @@ public class ResponseHeaderFilter implements  ContainerResponseFilter{
 	@Override
 	public void filter(ContainerRequestContext requestContext,
 			ContainerResponseContext responseContext) throws IOException {
+		
 		String headerString = requestContext.getHeaderString(X_AUTH_TOKEN);
-		if(headerString != null)
+		if(headerString != null){
+			System.out.println("FILTER ---> TOKEN ON REQUEST"+headerString);
 			responseContext.getHeaders().add(X_AUTH_TOKEN, headerString);
+		}else{
+			System.out.println("FILTER ---> TOKEN ON RESPONSE"+headerString);
+			responseContext.getHeaders().add(X_AUTH_TOKEN, headerString);
+		}
 		
 	}
 

@@ -73,51 +73,75 @@ public class TestUserResource extends TestResource {
 		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);
 
 		
-		Response response = target.path("users").request()
-				.header(ResponseHeaderFilter.X_AUTH_TOKEN, "jhgasjdghjlawufcduuua73862478qgdgdqdhhaqdahdUISHDUHW").accept(MediaType.APPLICATION_JSON)
+		Response response = target.path("users").request().accept(MediaType.APPLICATION_JSON)
 				.post(entity);
 		
-		Assert.assertTrue(Status.CREATED.equals(Status.fromStatusCode(response.getStatus())));
+		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
 		Assert.assertTrue(response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN)!= null);
 		
 	}
 	
 	@Test
 	public void testGetUserProfile(){
-		String username = "userProfile"+System.currentTimeMillis();
-		User user = makeFakeUser(username);
+		WebTarget target = client.target(getBaseURI());
+		User user = makeFakeUser("testUserProfile"+System.currentTimeMillis());
 		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);
 
-		WebTarget target = client.target(getBaseURI());
-		Response response = target.path("users").request()
-				.header(ResponseHeaderFilter.X_AUTH_TOKEN, "jhgasjdghjlawufcduuua73862478qgdgdqdhhaqdahdUISHDUHW").accept(MediaType.APPLICATION_JSON)
+		
+		Response response = target.path("users").request().accept(MediaType.APPLICATION_JSON)
 				.post(entity);
 		
-		Assert.assertTrue(Status.CREATED.equals(Status.fromStatusCode(response.getStatus())));
-		Assert.assertTrue(response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN)!= null);
-		
-		String headerString = response.getHeaderString("Location");
-		System.out.println(headerString);
-		Assert.assertTrue(headerString != null && !headerString.isEmpty());
-		target = client.target(headerString);
-		response = target.request()
-				.header(ResponseHeaderFilter.X_AUTH_TOKEN, "jhgasjdghjlawufcduuua73862478qgdgdqdhhaqdahdUISHDUHW").accept(MediaType.APPLICATION_JSON)
-				.get();
 		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
+		String token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
+		Assert.assertTrue(token!= null);
+		
+		response = target.path("users").path("profile").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, token).accept(MediaType.APPLICATION_JSON)
+		.get();
+		
+		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
+		token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
+		Assert.assertTrue(token!= null);
 		user = response.readEntity(User.class);
 		System.out.println(user);
 		Assert.assertTrue(user != null);
-		Assert.assertTrue(user.getId()>-1);
-		Assert.assertTrue(username.equals(user.getUsername()));
 		
+				
 	}
+	
+	
+	@Test
+	public void testGetUserProfileToken(){
+		WebTarget target = client.target(getBaseURI());
+//		User user = makeFakeUserToken();
+//		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);
+//
+//		
+//		Response response = target.path("users").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, "ya29.bgG7tq0OTSTSIUHmcRJa5WWk8z6a7pUNpNIH5CNwcIHsWQwcr9TSMeauLjKWF4lASMfuajQlhwdBJw").accept(MediaType.APPLICATION_JSON)
+//				.post(entity);
+//		
+//		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
+//		String token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
+//		Assert.assertTrue(token!= null);
+		
+		Response response2 = target.path("users").path("profile").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, "ya29.bgG7tq0OTSTSIUHmcRJa5WWk8z6a7pUNpNIH5CNwcIHsWQwcr9TSMeauLjKWF4lASMfuajQlhwdBJw").accept(MediaType.APPLICATION_JSON)
+		.get();
+		
+		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response2.getStatus())));
+		String token = response2.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
+		Assert.assertTrue(token!= null);
+		User user2 = response2.readEntity(User.class);
+		System.out.println(user2);
+		Assert.assertTrue(user2 != null);
+		
+				
+	}
+	
 
 	/**
 	 * @return
 	 */
 	private URI getBaseURI() {
-//		return UriBuilder.fromUri("http://localhost:8080/aroundu-rest/service").build();
-		return UriBuilder.fromUri("http://hangapp-placava.rhcloud.com/service").build();
+		return UriBuilder.fromUri("http://localhost:8080/aroundu-rest/service").build();
 		
 	}
 }
