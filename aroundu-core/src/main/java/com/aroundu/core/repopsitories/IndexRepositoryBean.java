@@ -36,6 +36,6 @@ public class IndexRepositoryBean extends RepositoryBean{
 	
 	public void addToSpatialIndex(Node node){
 		Index<Node> index = getSpatialindex();
-		index.add(node, "eventSpatialId", node.getProperty("eventSpatialId"));
+		index.add(node, "dummy", "dummy");
 	}
 }

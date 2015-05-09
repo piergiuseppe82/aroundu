@@ -25,11 +25,13 @@ public class Event  extends NodeEntity {
     private String eventImageUrl;
     private Double latitude;
     private Double longitude;
-    private String eventSpatialId;
     private String position;
     private Double distance;
     private User   author;
     private Collection<User> likes;
+    private Long likesNumber;
+    private Collection<Event> aroundEvents;
+    private Long aroundEventsNumber;
     
 	public Double getDistance() {
 		return distance;
@@ -37,12 +39,7 @@ public class Event  extends NodeEntity {
 	public void setDistance(Double distance) {
 		this.distance = distance;
 	}
-	public String getEventSpatialId() {
-		return eventSpatialId;
-	}
-	public void setEventSpatialId(String eventSpatialId) {
-		this.eventSpatialId = eventSpatialId;
-	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -111,18 +108,38 @@ public class Event  extends NodeEntity {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	public Long getLikesNumber() {
+		return likesNumber;
+	}
+	public void setLikesNumber(Long likesNumber) {
+		this.likesNumber = likesNumber;
+	}
+	public Collection<Event> getAroundEvents() {
+		return aroundEvents;
+	}
+	public void setAroundEvents(Collection<Event> aroundEvents) {
+		this.aroundEvents = aroundEvents;
+	}
+	public Long getAroundEventsNumber() {
+		return aroundEventsNumber;
+	}
+	public void setAroundEventsNumber(Long aroundEventsNumber) {
+		this.aroundEventsNumber = aroundEventsNumber;
+	}
 	@Override
 	public String toString() {
 		return "Event [title=" + title + ", address=" + address
 				+ ", eventImage=" + eventImage + ", eventImageUrl="
 				+ eventImageUrl + ", latitude=" + latitude + ", longitude="
-				+ longitude + ", eventSpatialId=" + eventSpatialId
-				+ ", position=" + getPosition() + ", distance=" + distance
-				+ ", author=" + author + ", likes=" + likes + ", getId()="
-				+ getId() + ", getCreationTime()=" + getCreationTime()
+				+ longitude + ", position=" + position + ", distance=" + distance
+				+ ", author=" + author + ", likes=" + likes + ", likesNumber="
+				+ likesNumber + ", aroundEvents=" + aroundEvents
+				+ ", aroundEventsNumber=" + aroundEventsNumber
+				+ ", getCreationTime()=" + getCreationTime()
 				+ ", getUpdateTime()=" + getUpdateTime() + "]";
 	}
-    
+	
 	
 
    

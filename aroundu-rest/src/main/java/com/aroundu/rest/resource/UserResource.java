@@ -132,21 +132,6 @@ public class UserResource {
 			return null;
 	}
     
-    @Path("/logout")
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})  
-    public Response logout(@Context HttpServletRequest req){
-    	 try {
-    		
-			 req.getSession().invalidate();
-			 return  Response.status(Status.UNAUTHORIZED).build();
- 						 
- 		} catch (Exception e) {
- 			 e.printStackTrace();
- 			 req.getSession().invalidate();
- 			 return Response.serverError().build();
- 		}
-    }
     
     @POST
     @Consumes({MediaType.APPLICATION_JSON})

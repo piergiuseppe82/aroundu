@@ -95,7 +95,6 @@ public class RepoAssemblers {
 		node.setProperty( "eventImageUrl", bean.getEventImageUrl());
 		node.setProperty( "lat",  bean.getLatitude());		
 		node.setProperty( "lon",  bean.getLongitude());	
-		node.setProperty( "eventSpatialId",bean.getEventSpatialId());
 		node.setProperty( "creationTime", bean.getCreationTime());
 		node.setProperty( "updateTime", bean.getUpdateTime());
 	}
@@ -124,7 +123,6 @@ public class RepoAssemblers {
 		bean.setLatitude((Double)node.getProperty("lat"));
 		bean.setLongitude((Double)node.getProperty("lon"));
 		bean.setUpdateTime((long)node.getProperty("updateTime"));
-		bean.setEventSpatialId((String)node.getProperty("eventSpatialId"));		
 		
 		Iterable<Relationship> relationships = node.getRelationships(RepositoryBean.RelTypes.POST, Direction.INCOMING);
 		if(relationships != null){

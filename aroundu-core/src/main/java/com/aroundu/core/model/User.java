@@ -28,7 +28,7 @@ public class User  extends NodeEntity {
     private String token;
     private String gender;
     private String locale;
-    private long expiretime;
+    private Long expiretime;
     
 	
 	
@@ -86,10 +86,10 @@ public class User  extends NodeEntity {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	public long getExpiretime() {
+	public Long getExpiretime() {
 		return expiretime;
 	}
-	public void setExpiretime(long expiretime) {
+	public void setExpiretime(Long expiretime) {
 		this.expiretime = expiretime;
 	}
 	

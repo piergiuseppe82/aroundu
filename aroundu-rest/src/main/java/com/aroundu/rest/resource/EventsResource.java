@@ -1,6 +1,7 @@
 package com.aroundu.rest.resource;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,15 +56,76 @@ public class EventsResource {
     	try {
     		Event event = new Event();
     		User author = new User();
-    		author.setUsername("utente1");
     		author.setId(1);
-    		author.setDisplayName("Nicola64");
-			event.setAuthor(author);
+    		author.setDisplayName("AuthorName");
+    		author.setThumbnail("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+			event.setId(1);
+    		event.setAuthor(author);
     		event.setLatitude(41.9677526);
     		event.setLongitude(12.6594818);
+    		event.setDistance(300.0);
     		event.setEventImageUrl("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
     		event.setTitle("TitleEvent");
     		event.setAddress("fortyfive");
+    		event.setAroundEventsNumber(10L);
+    		event.setLikesNumber(10L);
+    		event.setCreationTime(System.currentTimeMillis());
+			event.setUpdateTime(System.currentTimeMillis());
+			
+    		
+    		Collection<User> likes = new ArrayList<User>();
+    		User like1 = new User();
+    		like1.setId(2);
+    		like1.setDisplayName("Userlike1");
+    		like1.setThumbnail("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+    		likes.add(like1);
+    		User like2 = new User();
+    		like2.setId(3);
+    		like2.setDisplayName("Userlike2");
+    		like2.setThumbnail("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+    		likes.add(like2);
+    		User like3 = new User();
+    		like3.setId(4);
+    		like3.setDisplayName("Userlike3");
+    		like3.setThumbnail("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+    		likes.add(like3);
+    		event.setLikes(likes);
+			
+    		Collection<Event> aroundEvents = new ArrayList<Event>();
+    		Event event2 = new Event();
+    		User author2 = new User();
+    		author2.setId(2);
+    		author2.setDisplayName("AuthorName2");
+    		author2.setThumbnail("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+			event2.setId(2);
+    		event2.setAuthor(author2);
+    		event2.setDistance(300.0);
+    		event2.setEventImageUrl("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+    		event2.setTitle("TitleEvent2");
+    		aroundEvents.add(event2);
+    		Event event3 = new Event();
+    		User author3 = new User();
+    		author3.setId(3);
+    		author3.setDisplayName("AuthorName3");
+    		author3.setThumbnail("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+			event3.setId(3);
+    		event3.setAuthor(author3);
+    		event3.setDistance(300.0);
+    		event3.setEventImageUrl("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+    		event3.setTitle("TitleEvent3");
+    		aroundEvents.add(event3);
+    		Event event4 = new Event();
+    		User author4 = new User();
+    		author4.setId(4);
+    		author4.setDisplayName("AuthorName4");
+    		author4.setThumbnail("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+			event4.setId(4);
+    		event4.setAuthor(author4);
+    		event4.setDistance(300.0);
+    		event4.setEventImageUrl("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
+    		event4.setTitle("TitleEvent4");
+    		aroundEvents.add(event4);
+    		event.setAroundEvents(aroundEvents);
 			return Response.ok(event).build();
 		} catch (Exception e) {
 			e.printStackTrace();

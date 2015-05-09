@@ -24,7 +24,6 @@ public class EventRepositoryBean extends RepositoryBean{
 		long currentTimeMillis = System.currentTimeMillis();
 		event.setCreationTime(currentTimeMillis);
 		event.setUpdateTime(currentTimeMillis);
-		event.setEventSpatialId(event.getAuthor().getId()+"_"+currentTimeMillis);
 		Node createNode = getGraphDatabaseServices().createNode(DynamicLabel.label(Event.class.getSimpleName()));
 		RepoAssemblers.beanToNode(event, createNode);		
 		event.setId(createNode.getId());		
