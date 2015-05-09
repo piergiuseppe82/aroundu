@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.aroundu.core.model.User;
 
@@ -13,12 +15,12 @@ import com.aroundu.core.model.User;
  *
  */
 public class TestServiceUser extends TestService{
-	
+	Logger log = LoggerFactory.getLogger(TestServiceUser.class);
 	@Test
 	public void testAddUser(){
 		User addUser = addFakeUser("userForTestAddUser");
 		Assert.assertTrue(addUser.getId() > -1);	
-		System.out.println(addUser);
+		log.debug(""+addUser);
 	}
 	
 	@Test
@@ -30,7 +32,7 @@ public class TestServiceUser extends TestService{
 		Collection<User> allUser = userServiceBean.getAllUser();
 		Assert.assertTrue(allUser.size() >= 3);	
 		for (User user : allUser) {
-			System.out.println(user);
+			log.debug(""+user);
 		}
 	}	
 	
@@ -40,7 +42,7 @@ public class TestServiceUser extends TestService{
 		User addUser = addFakeUser("userForTestGetUser");		
 		User p = userServiceBean.getUser(addUser);
 		Assert.assertTrue(p!=null && p.getId() == addUser.getId());		
-		System.out.println(p);
+		log.debug(""+p);
 	}
 	
 	@Test
@@ -71,6 +73,15 @@ public class TestServiceUser extends TestService{
 		addFakeUser("testUsersPaginate3");
 		Collection<User> allUser = userServiceBean.getUsersPaginate(0, 2, false);
 		Assert.assertTrue(allUser.size() == 2);	
+	}
+	
+	@Test
+	public void testConstraintsAddUser(){
+		User addUser = addFakeUser("userForTestAddUserConst");
+		Assert.assertTrue(addUser.getId() > -1);	
+		log.debug(""+addUser);
+		addUser = addFakeUser("userForTestAddUserConst");
+		Assert.assertNull(addUser);
 	}
 
 	

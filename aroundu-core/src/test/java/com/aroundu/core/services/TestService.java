@@ -13,7 +13,6 @@ import com.aroundu.core.infrastructure.ServiceBeanFactory;
 import com.aroundu.core.model.Event;
 import com.aroundu.core.model.User;
 import com.aroundu.core.services.utilities.MediaFilesMock;
-import com.aroundu.core.supports.Utility;
 
 /**
  * @author piergiuseppe82
@@ -24,7 +23,7 @@ public abstract class TestService {
 	
 	@Before
 	public void init(){
-		factory = ServiceBeanFactory.getInstance("target/graphdb",true);
+		factory = ServiceBeanFactory.getInstance("target/graphdb");
 	}
 	
 	protected User makeFakeUser(String username) {
@@ -72,7 +71,6 @@ public abstract class TestService {
 	protected User addFakeUser(String user) {
 		UserServiceBean userServiceBean = factory.getUserServiceBean();
 		User addUser = userServiceBean.addUser(makeFakeUser(user));
-		Assert.assertTrue(addUser.getId() > -1);	
 		return addUser;
 	}
 	

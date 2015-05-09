@@ -14,8 +14,11 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.aroundu.core.model.User;
+import com.aroundu.core.services.TestServiceUser;
 import com.aroundu.rest.filters.ResponseHeaderFilter;
 import com.aroundu.rest.provider.JsonMoxyConfigurationContextResolver;
 
@@ -28,7 +31,11 @@ import com.aroundu.rest.provider.JsonMoxyConfigurationContextResolver;
  *
  */
 public class TestUserResource extends TestResource {
-	
+	/**
+	 * 
+	 */
+	private static final String GOOGLE_TOKEN = "";
+	Logger log = LoggerFactory.getLogger(TestUserResource.class);
 	private Client client;
 	
 	@Before
@@ -52,7 +59,7 @@ public class TestUserResource extends TestResource {
 		WebTarget target = client.target(getBaseURI());
 		Response response = target.path("users").path("example").request().accept(MediaType.APPLICATION_JSON).get();
 		User user = response.readEntity(User.class);
-		System.out.println(user);
+		log.debug(""+user);
 		Assert.assertTrue(user != null);
 	}
 	
@@ -102,7 +109,7 @@ public class TestUserResource extends TestResource {
 		token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
 		Assert.assertTrue(token!= null);
 		user = response.readEntity(User.class);
-		System.out.println(user);
+		log.debug(""+user);
 		Assert.assertTrue(user != null);
 		
 				
@@ -112,25 +119,25 @@ public class TestUserResource extends TestResource {
 	@Test
 	public void testGetUserProfileToken(){
 		WebTarget target = client.target(getBaseURI());
-//		User user = makeFakeUserToken();
-//		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);
-//
-//		
-//		Response response = target.path("users").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, "ya29.bgG7tq0OTSTSIUHmcRJa5WWk8z6a7pUNpNIH5CNwcIHsWQwcr9TSMeauLjKWF4lASMfuajQlhwdBJw").accept(MediaType.APPLICATION_JSON)
-//				.post(entity);
-//		
-//		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
-//		String token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
-//		Assert.assertTrue(token!= null);
+		User user = makeFakeUserToken();
+		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);
+
 		
-		Response response2 = target.path("users").path("profile").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, "ya29.bgG7tq0OTSTSIUHmcRJa5WWk8z6a7pUNpNIH5CNwcIHsWQwcr9TSMeauLjKWF4lASMfuajQlhwdBJw").accept(MediaType.APPLICATION_JSON)
+		Response response = target.path("users").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, GOOGLE_TOKEN).accept(MediaType.APPLICATION_JSON)
+				.post(entity);
+		
+		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
+		String token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
+		Assert.assertTrue(token!= null);
+		
+		Response response2 = target.path("users").path("profile").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, GOOGLE_TOKEN).accept(MediaType.APPLICATION_JSON)
 		.get();
 		
 		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response2.getStatus())));
-		String token = response2.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
-		Assert.assertTrue(token!= null);
+		String token2 = response2.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
+		Assert.assertTrue(token2!= null);
 		User user2 = response2.readEntity(User.class);
-		System.out.println(user2);
+		log.debug(""+user2);
 		Assert.assertTrue(user2 != null);
 		
 				

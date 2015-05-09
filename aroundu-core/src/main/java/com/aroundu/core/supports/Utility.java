@@ -59,4 +59,11 @@ public class Utility {
 		  return (deg * Math.PI / 180.0);
 		}
 
+	/**
+	 * @return
+	 */
+	public static boolean isServerRuntime() {
+		return System.getenv("OPENSHIFT_DATA_DIR") != null || System.getProperty("catalina.base")==null;
+	}
+
 }

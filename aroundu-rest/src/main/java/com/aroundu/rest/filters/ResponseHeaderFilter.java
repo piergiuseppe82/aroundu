@@ -10,13 +10,18 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.aroundu.rest.resource.TestUserResource;
+
 /**
  * @author piergiuseppe82
  *
  */
 @Provider
 public class ResponseHeaderFilter implements  ContainerResponseFilter{
-
+	Logger log = LoggerFactory.getLogger(ResponseHeaderFilter.class);
 	/**
 	 * 
 	 */
@@ -31,10 +36,10 @@ public class ResponseHeaderFilter implements  ContainerResponseFilter{
 		
 		String headerString = requestContext.getHeaderString(X_AUTH_TOKEN);
 		if(headerString != null){
-			System.out.println("FILTER ---> TOKEN ON REQUEST"+headerString);
+			log.debug("TOKEN ON REQUEST "+headerString);
 			responseContext.getHeaders().add(X_AUTH_TOKEN, headerString);
 		}else{
-			System.out.println("FILTER ---> TOKEN ON RESPONSE"+headerString);
+			log.debug("TOKEN ON RESPONSE "+headerString);
 			responseContext.getHeaders().add(X_AUTH_TOKEN, headerString);
 		}
 		

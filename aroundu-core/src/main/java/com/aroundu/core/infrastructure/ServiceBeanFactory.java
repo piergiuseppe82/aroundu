@@ -17,30 +17,19 @@ public class ServiceBeanFactory extends Factory{
 		
 	}
 	
-	private ServiceBeanFactory(String dbpath, boolean destroy){
-		repositoryBeanFactory = RepositoryBeanFactory.instance(dbpath,destroy);            
+	private ServiceBeanFactory(String dbpath){
+		repositoryBeanFactory = RepositoryBeanFactory.instance(dbpath);            
 	}	
 	
 	public static ServiceBeanFactory getInstance(String dbpath) {
 		if(instance==null){
 			synchronized (ServiceBeanFactory.class){
 				if(instance==null)
-					instance = new ServiceBeanFactory(dbpath,false);
+					instance = new ServiceBeanFactory(dbpath);
 			}
 		}			
 		return instance;
 	}
-	
-	public static ServiceBeanFactory getInstance(String dbpath,boolean destroy) {
-		if(instance==null){
-			synchronized (ServiceBeanFactory.class){
-				if(instance==null)
-					instance = new ServiceBeanFactory(dbpath,destroy);
-			}
-		}			
-		return instance;
-	}
-	
 	
 	public static ServiceBeanFactory getInstance() {
 		return getInstance(Utility.getGraphDBPath());

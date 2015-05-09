@@ -18,7 +18,10 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.io.fs.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.aroundu.core.services.UserServiceBean;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
@@ -27,7 +30,7 @@ import com.vividsolutions.jts.operation.distance.DistanceOp;
 
 
 public class TestNeo4j {
-	
+	Logger log = LoggerFactory.getLogger(TestNeo4j.class);
 	GraphDatabaseService graphDb;
 	Node firstNode;
 	Node secondNode;
@@ -74,14 +77,14 @@ public class TestNeo4j {
 
 //			
 //			
-			System.out.println(forNodes.getName());
+			log.debug(forNodes.getName());
 			relationship = firstNode.createRelationshipTo( secondNode, RelTypes.KNOWS );
 			relationship.setProperty( "message", "brave Neo4j " );
 //			
 //			
 			
-			System.out.println(LayerNodeIndex.DISTANCE_IN_KM_PARAMETER);
-			System.out.println(LayerNodeIndex.WITHIN_DISTANCE_QUERY);
+			log.debug(LayerNodeIndex.DISTANCE_IN_KM_PARAMETER);
+			log.debug(LayerNodeIndex.WITHIN_DISTANCE_QUERY);
 			
 			
 			Result execute = graphDb.execute("START n=node:geom('withinDistance:[46.9163, -114.0905, 50.0]') RETURN n");
@@ -89,19 +92,19 @@ public class TestNeo4j {
 				Map<String, Object> next = execute.next();
 				Set<String> keySet = next.keySet();
 				for (String string : keySet) {
-					System.out.println(string);
+					log.debug(string);
 					Object object = next.get(string);
 					Node node = (Node) object;
 					Iterable<String> propertyKeys = node.getPropertyKeys();
 					for (String string2 : propertyKeys) {
-						System.out.println("\t"+string2+":"+node.getProperty(string2));
+						log.debug("\t"+string2+":"+node.getProperty(string2));
 					}
 					WKTReader wktRdr = new WKTReader();
 			        Geometry A = wktRdr.read("POINT(46.9163 -114.0905)");
 			        Geometry B = wktRdr.read("POINT("+node.getProperty("lat")+" "+node.getProperty("lon")+")");
 			        DistanceOp distOp = new DistanceOp(A, B );
 			        
-			        System.out.println("\tdistOp:"+distOp.distance());
+			        log.debug("\tdistOp:"+distOp.distance());
 					
 				}
 				

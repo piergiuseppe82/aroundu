@@ -3,6 +3,8 @@ package com.aroundu.core.services;
 import java.util.Collection;
 
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.aroundu.core.infrastructure.RepositoryBean;
 import com.aroundu.core.infrastructure.ServiceBean;
@@ -19,6 +21,8 @@ import com.aroundu.core.repopsitories.ImageRepositoryBean.ImageDimesionType;
 public class EventServiceBean extends ServiceBean {
 	private EventRepositoryBean eventRepositoryBean;
 	private UserRepositoryBean userRepositoryBean;
+	
+	Logger log = LoggerFactory.getLogger(EventServiceBean.class);
 	
 	public UserRepositoryBean getUserRepositoryBean() {
 		return userRepositoryBean;
@@ -56,7 +60,7 @@ public class EventServiceBean extends ServiceBean {
 			}
 			tx.failure();
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error", t);
 		}
 		return null;
 		
@@ -69,7 +73,7 @@ public class EventServiceBean extends ServiceBean {
 			tx.success();
 			return findAll;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error", t);
 		}
 		return null;
 		
@@ -81,7 +85,7 @@ public class EventServiceBean extends ServiceBean {
 			tx.success();
 			return findAll;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error", t);
 		}
 		return null;
 		
@@ -93,7 +97,7 @@ public class EventServiceBean extends ServiceBean {
 			tx.success();
 			return findAll;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error", t);
 		}
 		return null;
 		
@@ -105,7 +109,7 @@ public class EventServiceBean extends ServiceBean {
 			tx.success();
 			return findAll;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error", t);
 		}
 		return null;
 		
@@ -117,7 +121,7 @@ public class EventServiceBean extends ServiceBean {
 			tx.success();
 			return findAll;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error", t);
 		}
 		return null;
 		

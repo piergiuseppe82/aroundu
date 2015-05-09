@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.aroundu.core.model.Event;
 
@@ -12,7 +14,7 @@ import com.aroundu.core.model.Event;
  *
  */
 public class TestServiceEvent extends TestService{
-	
+	Logger log = LoggerFactory.getLogger(TestServiceEvent.class);
 	
 	
 	
@@ -25,7 +27,7 @@ public class TestServiceEvent extends TestService{
 		Collection<Event> events = eventServiceBean.getEvents();
 		Assert.assertTrue(events !=null && events.size() >= 3);	
 		for (Event event : events) {
-			System.out.println(event);
+			log.debug(""+event);
 		}
 	}
 	
@@ -41,23 +43,23 @@ public class TestServiceEvent extends TestService{
 		Collection<Event> events = eventServiceBean.getEvents(0, 2);
 		Assert.assertTrue(events !=null && events.size() == 2);	
 		for (Event event : events) {
-			System.out.println(event);
+			log.debug(""+event);
 		}
 	}
 	
 	@Test
 	public void testGetAllEventWhithDistance() {
 		EventServiceBean eventServiceBean = factory.getEventServiceBean();
-		addfakeEvent("ROMA - GIARDINI VATICANI",41.903609, 12.450288);
-		addfakeEvent("ROMA - ISOLA TIBERINA",41.890828, 12.477046);
-		addfakeEvent("ROMA - PIAZZA DEI CINQUECENTO",41.900794, 12.502023);
-		addfakeEvent("ROMA - TERME DI CARACALLA",41.879262, 12.492324);
-		addfakeEvent("ROMA - COLOSSEO",41.890380, 12.492410);
-		addfakeEvent("ROMA - UNIVERSITA' LA SAPIENZA",41.903541, 12.514554);
+		addfakeEvent("1 ROMA - GIARDINI VATICANI",41.903609, 12.450288);
+		addfakeEvent("1 ROMA - ISOLA TIBERINA",41.890828, 12.477046);
+		addfakeEvent("1 ROMA - PIAZZA DEI CINQUECENTO",41.900794, 12.502023);
+		addfakeEvent("1 ROMA - TERME DI CARACALLA",41.879262, 12.492324);
+		addfakeEvent("1 ROMA - COLOSSEO",41.890380, 12.492410);
+		addfakeEvent("1 ROMA - UNIVERSITA' LA SAPIENZA",41.903541, 12.514554);
 		Collection<Event> events = eventServiceBean.getEvents(41.902235, 12.456800/*ROMA - P.ZZA S.Pietro*/,3.0);
 		for (Event event : events) {
 			Assert.assertTrue(event.getDistance() != null && event.getDistance().doubleValue() <= 3.0);	
-			System.out.println(event);
+			log.debug(""+event);
 		}
 	}
 	
@@ -74,7 +76,7 @@ public class TestServiceEvent extends TestService{
 		Assert.assertTrue(events !=null && events.size() ==1);	
 		for (Event event : events) {
 			Assert.assertTrue(event.getDistance() != null && event.getDistance().doubleValue() <= 3.0);	
-			System.out.println(event);
+			log.debug(""+event);
 		}
 	}
 
@@ -82,7 +84,7 @@ public class TestServiceEvent extends TestService{
 	public void testAddEvent(){
 		Event addEvent = addfakeEvent("testAddEvent", null, null);
 		Assert.assertTrue(addEvent.getId() > -1);
-		System.out.println(addEvent);
+		log.debug(""+addEvent);
 	}
 
 	

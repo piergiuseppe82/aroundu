@@ -53,24 +53,34 @@ public class RepoAssemblers {
 	}
 	
 	public static void nodeToBean(Node node, User bean) {
-		bean.setUsername((String)node.getProperty("username"));
-		bean.setDisplayName((String)node.getProperty("displayName"));
-		bean.setCreationTime((long)node.getProperty("creationTime"));
-		bean.setEmail((String)node.getProperty("email"));
+		bean.setUsername((String)getProperty("username",node));
+		bean.setDisplayName((String)getProperty("displayName",node));
+		bean.setCreationTime((Long)getProperty("creationTime",node));
+		bean.setEmail((String)getProperty("email",node));
 		bean.setId(node.getId());
-		bean.setUpdateTime((long)node.getProperty("updateTime"));
-		bean.setAuth_domain((String)node.getProperty("auth_domain"));
-		bean.setBackground((String)node.getProperty("background"));
-		bean.setExpiretime((long)node.getProperty("expiretime"));
-		bean.setThumbnail((String)node.getProperty("thumbnail"));
-		bean.setToken((String)node.getProperty("token"));
+		bean.setUpdateTime((Long)getProperty("updateTime",node));
+		bean.setAuth_domain((String)getProperty("auth_domain",node));
+		bean.setBackground((String)getProperty("background",node));
+		bean.setExpiretime((Long)getProperty("expiretime",node));
+		bean.setThumbnail((String)getProperty("thumbnail",node));
+		bean.setToken((String)getProperty("token",node));
 		
 	}
 	
+	private static Object getProperty(String key, Node node){
+		try {
+			if(node.hasProperty(key))
+				return node.getProperty(key);
+		} catch (Exception e) {
+			return null;
+		}
+		return null;
+	}
+	
 	public static void nodeToBeanShort(Node node, User bean) {
-		bean.setDisplayName((String)node.getProperty("displayName"));
+		bean.setDisplayName((String)getProperty("displayName",node));
 		bean.setId(node.getId());
-		bean.setThumbnail((String)node.getProperty("thumbnail"));
+		bean.setThumbnail((String)getProperty("thumbnail",node));
 	}
 	
 	public static void beanToNode(User bean, Node node) {
@@ -79,12 +89,12 @@ public class RepoAssemblers {
 		node.setProperty( "creationTime", bean.getCreationTime());
 		node.setProperty( "updateTime", bean.getUpdateTime());
 		node.setProperty( "email",  bean.getEmail());		
-		node.setProperty( "password", bean.getPassword()!=null?bean.getPassword():"");
-		node.setProperty( "thumbnail", bean.getThumbnail()!=null?bean.getThumbnail():"");
+		if(bean.getPassword() !=null)node.setProperty( "password", bean.getPassword());
+		if(bean.getThumbnail() !=null)node.setProperty( "thumbnail", bean.getThumbnail());
 		node.setProperty( "displayName", bean.getDisplayName());
-		node.setProperty( "auth_domain",  bean.getAuth_domain()!=null?bean.getAuth_domain():"");
-		node.setProperty( "background",  bean.getBackground()!=null?bean.getBackground():"");
-		node.setProperty( "expiretime",  bean.getExpiretime());
+		if(bean.getAuth_domain() !=null)node.setProperty( "auth_domain",  bean.getAuth_domain());
+		if(bean.getBackground() !=null)node.setProperty( "background",  bean.getBackground());
+		if(bean.getExpiretime() !=null)node.setProperty( "expiretime",  bean.getExpiretime());
 		node.setProperty( "token",  bean.getToken());
 	}
 	
@@ -115,14 +125,14 @@ public class RepoAssemblers {
 
 	public static void nodeToBean(Node node, Event bean) {
 		
-		bean.setTitle((String)node.getProperty("title"));
-		bean.setAddress((String)node.getProperty("address"));
-		bean.setCreationTime((long)node.getProperty("creationTime"));
-		bean.setEventImageUrl((String)node.getProperty("eventImageUrl"));
+		bean.setTitle((String)getProperty("title",node));
+		bean.setAddress((String)getProperty("address",node));
+		bean.setCreationTime((long)getProperty("creationTime",node));
+		bean.setEventImageUrl((String)getProperty("eventImageUrl",node));
 		bean.setId(node.getId());
-		bean.setLatitude((Double)node.getProperty("lat"));
-		bean.setLongitude((Double)node.getProperty("lon"));
-		bean.setUpdateTime((long)node.getProperty("updateTime"));
+		bean.setLatitude((Double)getProperty("lat",node));
+		bean.setLongitude((Double)getProperty("lon",node));
+		bean.setUpdateTime((long)getProperty("updateTime",node));
 		
 		Iterable<Relationship> relationships = node.getRelationships(RepositoryBean.RelTypes.POST, Direction.INCOMING);
 		if(relationships != null){
@@ -176,7 +186,7 @@ public class RepoAssemblers {
 					Node node = (Node)map.get(key);
 					Event p = new Event();
 					RepoAssemblers.nodeToBean(node, p);
-					double distance = Utility.distance(latitute, longitude, (Double)node.getProperty("lat"), (Double)node.getProperty("lon"), 'K');
+					double distance = Utility.distance(latitute, longitude, (Double)getProperty("lat",node), (Double)getProperty("lon",node), 'K');
 					p.setDistance(distance);
 					pList.add(p);
 				}

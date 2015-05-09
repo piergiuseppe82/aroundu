@@ -3,14 +3,17 @@ package com.aroundu.core.infrastructure;
 import java.io.File;
 import java.io.IOException;
 
+import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.io.fs.FileUtils;
 
+import com.aroundu.core.repopsitories.EventRepositoryBean;
 import com.aroundu.core.repopsitories.ImageRepositoryBean;
 import com.aroundu.core.repopsitories.IndexRepositoryBean;
 import com.aroundu.core.repopsitories.UserRepositoryBean;
-import com.aroundu.core.repopsitories.EventRepositoryBean;
+import com.aroundu.core.supports.Utility;
 
 /**
  * @author piergiuseppe82
@@ -24,33 +27,37 @@ public class RepositoryBeanFactory extends Factory{
 	private RepositoryBeanFactory(){
 		
 	}
-	private RepositoryBeanFactory(String dbpath,boolean destroy){
+	private RepositoryBeanFactory(String dbpath){
 		
         synchronized (GraphDatabaseService.class){
         	graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(dbpath);
+        	
+        	createConstraints(graphDb);
         }      
 	
 	
-        registerShutdownHook( graphDb, destroy, dbpath );
+        registerShutdownHook( graphDb, false, dbpath );
+	}
+	
+	/**
+	 * @param graphDb2
+	 */
+	private void createConstraints(GraphDatabaseService graphDb2) {
+		try ( Transaction tx = graphDb2.beginTx() )
+		{
+			graphDb2.schema().constraintFor(DynamicLabel.label("User"))
+					.assertPropertyIsUnique("username").create();
+			graphDb2.schema().constraintFor(DynamicLabel.label("User"))
+					.assertPropertyIsUnique("token").create();
+			tx.success();
+		}		
 	}
 	
 	public static RepositoryBeanFactory instance(String dbpath) {
 		if(factoryInstace==null){
 			synchronized (RepositoryBeanFactory.class){
 				if(factoryInstace==null)
-					factoryInstace = instance(dbpath, false);
-			}
-		}			
-		return factoryInstace;
-		
-	}
-	
-	
-	public static RepositoryBeanFactory instance(String dbpath, boolean destroy) {
-		if(factoryInstace==null){
-			synchronized (RepositoryBeanFactory.class){
-				if(factoryInstace==null)
-					factoryInstace = new RepositoryBeanFactory(dbpath,destroy);
+					factoryInstace = new RepositoryBeanFactory(dbpath);
 			}
 		}			
 		return factoryInstace;

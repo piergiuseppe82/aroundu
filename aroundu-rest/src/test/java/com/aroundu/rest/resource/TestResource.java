@@ -17,7 +17,7 @@ import com.aroundu.core.services.utilities.MediaFilesMock;
 public abstract class TestResource {
 	protected User makeFakeUser(String username) {
 		User p = new User();
-		p.setUsername(username);
+		p.setUsername(username+System.currentTimeMillis());
 		p.setEmail(username+"@"+username+".com");
 		p.setDisplayName(username+"_fn");
 		p.setPassword(username+"_pw");
@@ -29,7 +29,7 @@ public abstract class TestResource {
 	
 	protected User makeFakeUserToken() {
 		User p = new User();
-		p.setUsername("112017354008475255989@GOOGLE");
+		p.setUsername(System.currentTimeMillis()+"@GOOGLE");
 		p.setEmail("piergiuseppe82@gmail.com");
 		p.setDisplayName("piergiuseppe la cava");
 		p.setAuth_domain("GOOGLE");
@@ -40,7 +40,7 @@ public abstract class TestResource {
 	
 	protected User makeFakeAuthor(String username) {
 		User p = new User();
-		p.setUsername(username);
+		p.setUsername(username+System.currentTimeMillis());
 		p.setEmail(username+"@"+username+".com");
 		p.setDisplayName(username+"_fn");
 		p.setPassword(username+"_pw");

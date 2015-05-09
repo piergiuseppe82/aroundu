@@ -2,12 +2,15 @@ package com.aroundu.core.services;
 
 import java.util.Collection;
 
+import org.neo4j.graphdb.ConstraintViolationException;
 import org.neo4j.graphdb.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.aroundu.core.infrastructure.ServiceBean;
 import com.aroundu.core.model.User;
-import com.aroundu.core.repopsitories.UserRepositoryBean;
 import com.aroundu.core.repopsitories.ImageRepositoryBean.ImageDimesionType;
+import com.aroundu.core.repopsitories.UserRepositoryBean;
 import com.aroundu.core.supports.Utility;
 
 /**
@@ -15,6 +18,9 @@ import com.aroundu.core.supports.Utility;
  *
  */
 public class UserServiceBean extends ServiceBean {
+	
+	Logger log = LoggerFactory.getLogger(UserServiceBean.class);
+
 
 	private UserRepositoryBean userRepositoryBean;
 	
@@ -42,8 +48,10 @@ public class UserServiceBean extends ServiceBean {
 			userRepositoryBean.createUser(user);
 			tx.success();
 			return user;
+		}catch(ConstraintViolationException t){
+			log.error("Error on add user",t);
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error on add user",t);
 		}	
 		return null;
 	}
@@ -56,7 +64,7 @@ public class UserServiceBean extends ServiceBean {
 			tx.success();
 			return plist;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error on add user",t);
 		}
 		return null;
 		
@@ -68,7 +76,7 @@ public class UserServiceBean extends ServiceBean {
 			tx.success();
 			return plist;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error ",t);
 		}
 		return null;
 		
@@ -81,7 +89,7 @@ public class UserServiceBean extends ServiceBean {
 			tx.success();
 			return pN;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error ",t);
 		}
 		return null;
 	}
@@ -93,7 +101,7 @@ public class UserServiceBean extends ServiceBean {
 			tx.success();
 			return pN;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error ",t);
 		}
 		return null;
 	}
@@ -104,7 +112,7 @@ public class UserServiceBean extends ServiceBean {
 			tx.success();
 			return true;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error ",t);
 		}
 		return false;
 	}
@@ -119,7 +127,7 @@ public class UserServiceBean extends ServiceBean {
 			tx.success();
 			return pN;
 		}catch(Throwable t){
-			t.printStackTrace();
+			log.error("Error ",t);
 		}
 		return null;
 		
