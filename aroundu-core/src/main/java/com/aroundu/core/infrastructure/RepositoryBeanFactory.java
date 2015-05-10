@@ -7,6 +7,8 @@ import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.graphdb.schema.ConstraintDefinition;
+import org.neo4j.graphdb.schema.ConstraintType;
 import org.neo4j.io.fs.FileUtils;
 
 import com.aroundu.core.repopsitories.EventRepositoryBean;
@@ -36,7 +38,7 @@ public class RepositoryBeanFactory extends Factory{
         }      
 	
 	
-        registerShutdownHook( graphDb, false, dbpath );
+        registerShutdownHook( graphDb, !Utility.isServerRuntime(), dbpath );
 	}
 	
 	/**
@@ -45,13 +47,33 @@ public class RepositoryBeanFactory extends Factory{
 	private void createConstraints(GraphDatabaseService graphDb2) {
 		try ( Transaction tx = graphDb2.beginTx() )
 		{
-			graphDb2.schema().constraintFor(DynamicLabel.label("User"))
-					.assertPropertyIsUnique("username").create();
-			graphDb2.schema().constraintFor(DynamicLabel.label("User"))
-					.assertPropertyIsUnique("token").create();
+			
+			addUniqueConstraints(graphDb2,"User","username");
+			addUniqueConstraints(graphDb2,"User","token");
+			
 			tx.success();
 		}		
 	}
+	private void addUniqueConstraints(GraphDatabaseService graphDb2,String label,String property) {
+		Iterable<ConstraintDefinition> constraints = graphDb2.schema().getConstraints(DynamicLabel.label(label));
+		if(constraints != null){
+			for (ConstraintDefinition constraintDefinition : constraints) {
+				if(constraintDefinition.isConstraintType(ConstraintType.UNIQUENESS)){
+					Iterable<String> propertyKeys = constraintDefinition.getPropertyKeys();
+					if(propertyKeys != null){
+						for (String string : propertyKeys) {
+							string.equalsIgnoreCase(property);
+							return;
+						}
+					}
+				}
+			}
+		}
+		graphDb2.schema().constraintFor(DynamicLabel.label(label))
+				.assertPropertyIsUnique(property).create();
+	}
+	
+	
 	
 	public static RepositoryBeanFactory instance(String dbpath) {
 		if(factoryInstace==null){

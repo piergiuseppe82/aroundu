@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aroundu.core.model.User;
-import com.aroundu.core.services.TestServiceUser;
 import com.aroundu.rest.filters.ResponseHeaderFilter;
 import com.aroundu.rest.provider.JsonMoxyConfigurationContextResolver;
 
@@ -31,10 +30,8 @@ import com.aroundu.rest.provider.JsonMoxyConfigurationContextResolver;
  *
  */
 public class TestUserResource extends TestResource {
-	/**
-	 * 
-	 */
-	private static final String GOOGLE_TOKEN = "";
+	
+	
 	Logger log = LoggerFactory.getLogger(TestUserResource.class);
 	private Client client;
 	
@@ -97,13 +94,16 @@ public class TestUserResource extends TestResource {
 		
 		Response response = target.path("users").request().accept(MediaType.APPLICATION_JSON)
 				.post(entity);
-		
+		log.debug(Status.fromStatusCode(response.getStatus()).toString());
 		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
+		
+		
 		String token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
 		Assert.assertTrue(token!= null);
 		
 		response = target.path("users").path("profile").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, token).accept(MediaType.APPLICATION_JSON)
 		.get();
+		log.debug(Status.fromStatusCode(response.getStatus()).toString());
 		
 		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
 		token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
@@ -117,22 +117,42 @@ public class TestUserResource extends TestResource {
 	
 	
 	@Test
-	public void testGetUserProfileToken(){
+	public void testGetUserProfileGoogleToken(){
+		if(GOOGLE_TOKEN.isEmpty())return;//SKIP TEST WHEN TOKEN NOT SETTED
 		WebTarget target = client.target(getBaseURI());
-		User user = makeFakeUserToken();
-		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);
-
 		
-		Response response = target.path("users").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, GOOGLE_TOKEN).accept(MediaType.APPLICATION_JSON)
+		User user = makeFakeUserGoogleToken();
+		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);		
+		target.path("users").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, GOOGLE_TOKEN).accept(MediaType.APPLICATION_JSON)
 				.post(entity);
-		
-		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
-		String token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
-		Assert.assertTrue(token!= null);
 		
 		Response response2 = target.path("users").path("profile").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, GOOGLE_TOKEN).accept(MediaType.APPLICATION_JSON)
 		.get();
+		log.debug(Status.fromStatusCode(response2.getStatus()).toString());
+		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response2.getStatus())));
+		String token2 = response2.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
+		Assert.assertTrue(token2!= null);
+		User user2 = response2.readEntity(User.class);
+		log.debug(""+user2);
+		Assert.assertTrue(user2 != null);
 		
+				
+	}
+	
+	@Test
+	public void testGetUserProfileFacebookToken(){
+		if(FACEBOOK_TOKEN.isEmpty())return;//SKIP TEST WHEN TOKEN NOT SETTED
+		WebTarget target = client.target(getBaseURI());
+		
+		User user = makeFakeUserFacebookToken();
+		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);		
+		target.path("users").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, FACEBOOK_TOKEN).accept(MediaType.APPLICATION_JSON)
+				.post(entity);
+	
+		
+		Response response2 = target.path("users").path("profile").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, FACEBOOK_TOKEN).accept(MediaType.APPLICATION_JSON)
+		.get();
+		log.debug(Status.fromStatusCode(response2.getStatus()).toString());
 		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response2.getStatus())));
 		String token2 = response2.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
 		Assert.assertTrue(token2!= null);

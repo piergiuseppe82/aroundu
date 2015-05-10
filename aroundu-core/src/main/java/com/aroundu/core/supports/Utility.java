@@ -63,7 +63,7 @@ public class Utility {
 	 * @return
 	 */
 	public static boolean isServerRuntime() {
-		return System.getenv("OPENSHIFT_DATA_DIR") != null || System.getProperty("catalina.base")==null;
+		return System.getenv("OPENSHIFT_DATA_DIR") != null /*|| System.getProperty("catalina.base")==null*/;
 	}
 
 }

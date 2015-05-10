@@ -13,6 +13,7 @@ public class OAuth2ClientIdStore {
 	
 
 	    private static ClientIdentifier clientIdentifier;
+	    private static ClientIdentifier fbClientIdentifier;
 
 	    public static  ClientIdentifier getClientIdentifier() {
 	        return clientIdentifier;
@@ -21,5 +22,13 @@ public class OAuth2ClientIdStore {
 	    public static void setClientIdentifier(ClientIdentifier clientIdentifier) {
 	    	OAuth2ClientIdStore.clientIdentifier = clientIdentifier;
 	    }
+
+		public static ClientIdentifier getFbClientIdentifier() {
+			return fbClientIdentifier;
+		}
+
+		public static void setFbClientIdentifier(ClientIdentifier fbClientIdentifier) {
+			OAuth2ClientIdStore.fbClientIdentifier = fbClientIdentifier;
+		}
 
 }

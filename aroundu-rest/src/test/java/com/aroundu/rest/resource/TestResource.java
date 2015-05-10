@@ -3,9 +3,6 @@
  */
 package com.aroundu.rest.resource;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
 import com.aroundu.core.model.Event;
 import com.aroundu.core.model.User;
 import com.aroundu.core.services.utilities.MediaFilesMock;
@@ -15,6 +12,8 @@ import com.aroundu.core.services.utilities.MediaFilesMock;
  *
  */
 public abstract class TestResource {
+	protected static final String GOOGLE_TOKEN = "";
+	protected static final String FACEBOOK_TOKEN = "";
 	protected User makeFakeUser(String username) {
 		User p = new User();
 		p.setUsername(username+System.currentTimeMillis());
@@ -27,12 +26,23 @@ public abstract class TestResource {
 		return p;
 	}
 	
-	protected User makeFakeUserToken() {
+	protected User makeFakeUserGoogleToken() {
 		User p = new User();
 		p.setUsername(System.currentTimeMillis()+"@GOOGLE");
 		p.setEmail("piergiuseppe82@gmail.com");
 		p.setDisplayName("piergiuseppe la cava");
 		p.setAuth_domain("GOOGLE");
+		
+//		p.setToken(new BigInteger(130, new SecureRandom()).toString(8));
+		return p;
+	}
+	
+	protected User makeFakeUserFacebookToken() {
+		User p = new User();
+		p.setUsername(System.currentTimeMillis()+"@FACEBOOK");
+		p.setEmail("piergiuseppe82@yahoo.com");
+		p.setDisplayName("piergiuseppe la cava");
+		p.setAuth_domain("FACEBOOK");
 		
 //		p.setToken(new BigInteger(130, new SecureRandom()).toString(8));
 		return p;

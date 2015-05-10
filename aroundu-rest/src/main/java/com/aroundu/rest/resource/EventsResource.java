@@ -16,37 +16,38 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.aroundu.core.infrastructure.ServiceBeanFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aroundu.core.model.Event;
 import com.aroundu.core.model.User;
-import com.aroundu.core.services.EventServiceBean;
 
 /**
  * @author piergiuseppe82
  *
  */
 @Path("/events")
-public class EventsResource {
+public class EventsResource extends AbstractAppResource{
     
-	private EventServiceBean eventServiceBean =  ServiceBeanFactory.getInstance().getEventServiceBean();
+	Logger log = LoggerFactory.getLogger(EventsResource.class);
+	@Context HttpServletRequest req;
 	
     @GET
     @Produces({MediaType.APPLICATION_JSON})  //add MediaType.APPLICATION_XML if you want XML as well (don't forget @XmlRootElement)
     public Response getEvents(){
+    	getAuthorizedUser(req);
     	try {
-    		Collection<Event> events = eventServiceBean.getEvents();
-			
+			Collection<Event> events = eventServiceBean.getEvents();
 			if(events != null){
 				GenericEntity<Collection<Event>> list = new GenericEntity<Collection<Event>>(events) {};
 				return Response.ok(list).build();
 			}else{
 				return Response.status(Status.NOT_FOUND).build();
 			}
-			
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error",e);
 			return Response.serverError().build();
-		}
+		}		
     }
     
     @GET
@@ -128,7 +129,7 @@ public class EventsResource {
     		event.setAroundEvents(aroundEvents);
 			return Response.ok(event).build();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error",e);
 			return Response.serverError().build();
 		}
     }
@@ -138,21 +139,21 @@ public class EventsResource {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response createEvent(Event event, @Context HttpServletRequest req) throws Exception{
-    	
-         try {
-        	 Event eventNew = eventServiceBean.addEvent(event);
-			 if(eventNew != null){
+		User authorizedUser = getAuthorizedUser(req);
+		try {
+			event.setAuthor(authorizedUser);
+			Event eventNew = eventServiceBean.addEvent(event);
+			if(eventNew != null){
 				URI location = new URI("/events/"+eventNew.getId());
 				return Response.created(location).build();
-			 }else{
-				 req.getSession().invalidate();
-				 return  Response.status(Status.NOT_ACCEPTABLE).build();
-			 }			 
+			}else{
+				req.getSession().invalidate();
+				return  Response.status(Status.NOT_ACCEPTABLE).build();
+			}
 		} catch (Exception e) {
-			 e.printStackTrace();
-			 req.getSession().invalidate();
-			 return Response.serverError().build();
-		}
+			log.error("Error",e);
+			return Response.serverError().build();
+		}			 
     }
 
 }
