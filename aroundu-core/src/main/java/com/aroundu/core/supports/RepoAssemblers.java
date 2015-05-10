@@ -64,6 +64,7 @@ public class RepoAssemblers {
 		bean.setExpiretime((Long)getProperty("expiretime",node));
 		bean.setThumbnail((String)getProperty("thumbnail",node));
 		bean.setToken((String)getProperty("token",node));
+		bean.setActive((Boolean)getProperty("active",node));
 		
 	}
 	
@@ -81,6 +82,7 @@ public class RepoAssemblers {
 		bean.setDisplayName((String)getProperty("displayName",node));
 		bean.setId(node.getId());
 		bean.setThumbnail((String)getProperty("thumbnail",node));
+		bean.setActive((Boolean)getProperty("active",node));
 	}
 	
 	public static void beanToNode(User bean, Node node) {
@@ -96,6 +98,7 @@ public class RepoAssemblers {
 		if(bean.getBackground() !=null)node.setProperty( "background",  bean.getBackground());
 		if(bean.getExpiretime() !=null)node.setProperty( "expiretime",  bean.getExpiretime());
 		node.setProperty( "token",  bean.getToken());
+		if(bean.getActive() !=null)node.setProperty( "active",  bean.getActive());
 	}
 	
 	public static void beanToNode(Event bean, Node node) {
@@ -195,4 +198,6 @@ public class RepoAssemblers {
 		}
 		return pList;
 	}
+
+	
 }

@@ -28,6 +28,7 @@ public class User  extends NodeEntity {
     private String token;
     private String gender;
     private String locale;
+    private Boolean active;
     private Long expiretime;
     
 	
@@ -105,6 +106,13 @@ public class User  extends NodeEntity {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+	
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 	@Override
 	public String toString() {
 		return "User [displayName=" + displayName + ", username=" + username
@@ -112,9 +120,7 @@ public class User  extends NodeEntity {
 				+ image + ", thumbnail=" + thumbnail + ", background="
 				+ background + ", auth_domain=" + auth_domain + ", token="
 				+ token + ", gender=" + gender + ", locale=" + locale
-				+ ", expiretime=" + expiretime + ", getCreationTime()="
-				+ getCreationTime() + ", getUpdateTime()=" + getUpdateTime()
-				+ "]";
+				+ ", active=" + active + ", expiretime=" + expiretime + "]";
 	}
 	
    

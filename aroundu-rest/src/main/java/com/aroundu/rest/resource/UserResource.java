@@ -1,8 +1,5 @@
 package com.aroundu.rest.resource;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aroundu.core.model.User;
+import com.aroundu.core.supports.SecurityTokenProvider;
 import com.aroundu.rest.filters.ResponseHeaderFilter;
 import com.aroundu.rest.security.ProviderApiClientsServices;
 
@@ -109,7 +107,7 @@ public class UserResource extends AbstractAppResource {
     			log.debug("token "+token);
 	    		ProviderApiClientsServices.getProvider(user).completeUserProfile(user);
     		}else{
-				token = createAppToken(user);
+				token = SecurityTokenProvider.generateSecret();
 				user.setToken(token);
     		}    		
 			User userNew = userServiceBean.addUser(user);
@@ -130,15 +128,6 @@ public class UserResource extends AbstractAppResource {
 			 return  Response.status(Status.NOT_ACCEPTABLE).build();
 		}
     }
-
-	/**
-	 * @param user 
-	 * @return 
-	 * 
-	 */
-	private String createAppToken(User user) {
-		return new BigInteger(130, new SecureRandom()).toString(8);
-	}
 
 		
 	
