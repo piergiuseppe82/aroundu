@@ -23,19 +23,22 @@ public class ApplicationConfig extends Application {
         //Features
         resources.add(org.glassfish.jersey.moxy.json.MoxyJsonFeature.class);
         
-        //Providers
-        resources.add(com.aroundu.rest.filters.ResponseHeaderFilter.class);
         
-        //OAuth2
+        //Providers
         resources.add(com.aroundu.rest.provider.JsonMoxyConfigurationContextResolver.class);
-        resources.add(com.aroundu.rest.security.oauth.OAuthSetupResource.class);
-        resources.add(com.aroundu.rest.security.oauth.OAuthResource.class);
-        resources.add(com.aroundu.rest.security.oauth.google.GoogleUserInfoResource.class);
-        resources.add(com.aroundu.rest.security.oauth.facebook.FacebookUserInfoResource.class);
+//        resources.add(com.aroundu.rest.filters.ResponseHeaderFilter.class);
+        
+        
+        //OAuth2      
+//        resources.add(com.aroundu.rest.security.oauth.OAuthSetupResource.class);
+//        resources.add(com.aroundu.rest.security.oauth.OAuthResource.class);
+//        resources.add(com.aroundu.rest.security.oauth.google.GoogleUserInfoResource.class);
+//        resources.add(com.aroundu.rest.security.oauth.facebook.FacebookUserInfoResource.class);
         
         //Application Resource
         resources.add(com.aroundu.rest.resource.UserResource.class);
         resources.add(com.aroundu.rest.resource.EventsResource.class);
+        resources.add(com.aroundu.rest.resource.ImageResource.class);
       
         return resources;
     }

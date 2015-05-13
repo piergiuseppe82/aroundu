@@ -34,14 +34,17 @@ public class UserResource extends AbstractAppResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
     public Response getUser(@PathParam("id") Long id){
+    	log.debug("Called GET - users/"+id);
 		getAuthorizedUser(req);
 		try {
 			User user = new User();
 			user.setId(id);
 			user = userServiceBean.getUser(user);
 			if(user != null){
+				log.debug("User"+id+" found");
 				return Response.ok(user).build();
 			}else{
+				log.debug("User"+id+" not found");
 				return Response.status(Status.NOT_FOUND).build();
 			}
 		} catch (Exception e) {
@@ -70,13 +73,16 @@ public class UserResource extends AbstractAppResource {
     @Produces({MediaType.APPLICATION_JSON})
     @Path("/login")
     public Response login(@QueryParam("username") String username,@QueryParam("password") String password ) throws Exception{
+    	log.debug("Called GET - login");
          try {
         	User checkUser = userServiceBean.checkUser(username, password);
+        	
 			 if(checkUser != null){
+				 log.debug("User"+checkUser.getUsername()+" found");
 				return Response.ok(checkUser).header(ResponseHeaderFilter.X_AUTH_TOKEN, checkUser.getToken()).build();
 			 }else{
-				 req.getSession().invalidate();
-				 return  Response.status(Status.UNAUTHORIZED).build();
+				 log.debug("User not found");
+				return  Response.status(Status.UNAUTHORIZED).build();
 			 }			 
 		} catch (Exception e) {
 			log.error("Error", e);
@@ -89,7 +95,8 @@ public class UserResource extends AbstractAppResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
     public Response getProfile(){
-    	User userFromRequest = getAuthorizedUser(req);    	
+    	log.debug("Called GET - profile");
+    	User userFromRequest = getAuthorizedUser(req); 
     	return Response.ok(userFromRequest).build();
     }
 
@@ -99,6 +106,7 @@ public class UserResource extends AbstractAppResource {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response resgisterUser(User user) throws Exception{
+    	log.debug("Called POST - users");
     	try {
     		String token = req.getHeader(ResponseHeaderFilter.X_AUTH_TOKEN);
     		

@@ -10,6 +10,8 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.schema.ConstraintDefinition;
 import org.neo4j.graphdb.schema.ConstraintType;
 import org.neo4j.io.fs.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.aroundu.core.repopsitories.EventRepositoryBean;
 import com.aroundu.core.repopsitories.ImageRepositoryBean;
@@ -24,7 +26,7 @@ import com.aroundu.core.supports.Utility;
 public class RepositoryBeanFactory extends Factory{
 	private static GraphDatabaseService graphDb; 
 	private static RepositoryBeanFactory factoryInstace;
-	
+	Logger log = LoggerFactory.getLogger(RepositoryBeanFactory.class);
 	
 	private RepositoryBeanFactory(){
 		
@@ -33,7 +35,7 @@ public class RepositoryBeanFactory extends Factory{
 		
         synchronized (GraphDatabaseService.class){
         	graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(dbpath);
-        	
+        	log.debug("Inizializing graphdb");
         	createConstraints(graphDb);
         }      
 	
@@ -55,6 +57,7 @@ public class RepositoryBeanFactory extends Factory{
 		}		
 	}
 	private void addUniqueConstraints(GraphDatabaseService graphDb2,String label,String property) {
+		log.debug("Request unique constarint fro "+label+" on property "+property);
 		Iterable<ConstraintDefinition> constraints = graphDb2.schema().getConstraints(DynamicLabel.label(label));
 		if(constraints != null){
 			for (ConstraintDefinition constraintDefinition : constraints) {
@@ -63,12 +66,14 @@ public class RepositoryBeanFactory extends Factory{
 					if(propertyKeys != null){
 						for (String string : propertyKeys) {
 							string.equalsIgnoreCase(property);
+							log.debug("Unique constraints for "+label+" on property "+property+" already exist");
 							return;
 						}
 					}
 				}
 			}
 		}
+		log.debug("Add unique constraints for "+label+" on property "+property);
 		graphDb2.schema().constraintFor(DynamicLabel.label(label))
 				.assertPropertyIsUnique(property).create();
 	}

@@ -23,17 +23,23 @@ import com.aroundu.rest.security.ProviderApiClientsServices;
 public abstract class AbstractAppResource {
 	protected UserServiceBean userServiceBean =  ServiceBeanFactory.getInstance().getUserServiceBean();
 	protected EventServiceBean eventServiceBean =  ServiceBeanFactory.getInstance().getEventServiceBean();
+	
 	Logger log = LoggerFactory.getLogger(UserResource.class);
 	
 	protected User getAuthorizedUser(HttpServletRequest req) {
 		try {
 			String token = req.getHeader(ResponseHeaderFilter.X_AUTH_TOKEN);
-			if(token == null || token.isEmpty()) return  null;
+			if(token == null || token.isEmpty())  throw new NotAuthorizedException("Not Autorized");;
 			User checkUser = userServiceBean.checkUser(token);
-			if(ProviderApiClientsServices.getProvider(checkUser).authorize(checkUser))
+			if(checkUser == null)throw new NotAuthorizedException("Not Autorized");
+			log.debug("User "+checkUser.getUsername()+" check provider authorization...");
+			if(ProviderApiClientsServices.getProvider(checkUser).authorize(checkUser)){
+				log.debug("User "+checkUser.getUsername()+" authoirized from provider");
 				return checkUser;
-			else
+			}else{
+				log.debug("User "+checkUser.getUsername()+" not authirized from provider");
 				throw new NotAuthorizedException("Not Autorized");
+			}
 		} catch (Throwable e) {
 			log.error("Error",e);
 			throw new NotAuthorizedException("Not Autorized");

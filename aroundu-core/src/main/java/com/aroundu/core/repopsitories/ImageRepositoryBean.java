@@ -69,7 +69,7 @@ public class ImageRepositoryBean extends RepositoryBean {
 			throw new Exception("Error during write image");
 		}
 	}
-
+	
 	/**
 	 * @param string
 	 * @param largeImage
@@ -79,8 +79,8 @@ public class ImageRepositoryBean extends RepositoryBean {
 	 */
 	private String saveImage(String filename, String fileformat,ImageDimesionType typeImage,
 			String username, byte[] in) throws Exception {
-		String urlImage = typeImage.toString()+"/"+filename+"."+fileformat;
-		String relativePath = username+"/"+urlImage;
+		String urlImage = typeImage.toString()+File.separator+filename+"."+fileformat;
+		String relativePath = urlImage;
 		writeImage(in, typeImage, fileformat, relativePath);
 		return urlImage;
 	}

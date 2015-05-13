@@ -1,6 +1,5 @@
 package com.aroundu.core.model;
 
-import java.util.Collection;
 
 
 /**
@@ -28,9 +27,7 @@ public class Event  extends NodeEntity {
     private String position;
     private Double distance;
     private User   author;
-    private Collection<User> likes;
-    private Long likesNumber;
-    private Collection<Event> aroundEvents;
+    private Long hangsNumber;
     private Long aroundEventsNumber;
     
 	public Double getDistance() {
@@ -90,12 +87,6 @@ public class Event  extends NodeEntity {
 	public void setAuthor(User author) {
 		this.author = author;
 	}
-	public Collection<User> getLikes() {
-		return likes;
-	}
-	public void setLikes(Collection<User> likes) {
-		this.likes = likes;
-	}
 	public String getEventImageUrl() {
 		return eventImageUrl;
 	}
@@ -108,37 +99,29 @@ public class Event  extends NodeEntity {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	public Long getLikesNumber() {
-		return likesNumber;
-	}
-	public void setLikesNumber(Long likesNumber) {
-		this.likesNumber = likesNumber;
-	}
-	public Collection<Event> getAroundEvents() {
-		return aroundEvents;
-	}
-	public void setAroundEvents(Collection<Event> aroundEvents) {
-		this.aroundEvents = aroundEvents;
-	}
 	public Long getAroundEventsNumber() {
 		return aroundEventsNumber;
 	}
 	public void setAroundEventsNumber(Long aroundEventsNumber) {
 		this.aroundEventsNumber = aroundEventsNumber;
 	}
+	public Long getHangsNumber() {
+		return hangsNumber;
+	}
+	public void setHangsNumber(Long hangsNumber) {
+		this.hangsNumber = hangsNumber;
+	}
 	@Override
 	public String toString() {
 		return "Event [title=" + title + ", address=" + address
 				+ ", eventImage=" + eventImage + ", eventImageUrl="
 				+ eventImageUrl + ", latitude=" + latitude + ", longitude="
-				+ longitude + ", position=" + position + ", distance=" + distance
-				+ ", author=" + author + ", likes=" + likes + ", likesNumber="
-				+ likesNumber + ", aroundEvents=" + aroundEvents
-				+ ", aroundEventsNumber=" + aroundEventsNumber
-				+ ", getCreationTime()=" + getCreationTime()
-				+ ", getUpdateTime()=" + getUpdateTime() + "]";
+				+ longitude + ", position=" + position + ", distance="
+				+ distance + ", author=" + author + ", hangsNumber="
+				+ hangsNumber + ", aroundEventsNumber=" + aroundEventsNumber
+				+ "]";
 	}
+	
 	
 	
 

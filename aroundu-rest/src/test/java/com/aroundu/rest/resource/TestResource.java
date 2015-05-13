@@ -14,6 +14,8 @@ import com.aroundu.core.services.utilities.MediaFilesMock;
 public abstract class TestResource {
 	protected static final String GOOGLE_TOKEN = "";
 	protected static final String FACEBOOK_TOKEN = "";
+	protected static final String INTERNAL_TOKEN = "cc57a71ba41fe82450b39e15ee68edabdc88a6a39e804b9d510aae948ba09ceb461f49bbfb";
+	
 	protected User makeFakeUser(String username) {
 		User p = new User();
 		p.setUsername(username+System.currentTimeMillis());
@@ -72,7 +74,7 @@ public abstract class TestResource {
 			event.setLatitude(latitude!=null?latitude:41.9677526);
 			event.setLongitude(longitude!=null?longitude:12.6594818);
 		}	
-		event.setEventImageUrl(title+"_image_url");
+		event.setEventImage(MediaFilesMock.IMAGE_64_X_64);
 		event.setTitle(title);
 		event.setAddress(title+"_add");
 		return event;

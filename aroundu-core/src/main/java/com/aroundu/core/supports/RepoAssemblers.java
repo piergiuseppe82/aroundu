@@ -146,18 +146,6 @@ public class RepoAssemblers {
 				bean.setAuthor(user);
 			}
 		}
-		relationships = node.getRelationships(RepositoryBean.RelTypes.LIKE, Direction.INCOMING);
-		if(relationships != null){
-			Collection<User> likes = new ArrayList<User>();
-			for (Relationship relationship : relationships) {
-				Node userNode = relationship.getStartNode();
-				User user = new User();
-				RepoAssemblers.nodeToBeanShort(userNode, user);
-				likes.add(user);
-				
-			}
-			bean.setLikes(likes);
-		}
 	}
 
 	public static Collection<Event> toEventCollection(Result execute) {
@@ -190,7 +178,7 @@ public class RepoAssemblers {
 					Event p = new Event();
 					RepoAssemblers.nodeToBean(node, p);
 					double distance = Utility.distance(latitute, longitude, (Double)getProperty("lat",node), (Double)getProperty("lon",node), 'K');
-					p.setDistance(distance);
+					p.setDistance(distance/1000);
 					pList.add(p);
 				}
 				

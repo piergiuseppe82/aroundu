@@ -67,11 +67,30 @@ public class EventServiceBean extends ServiceBean {
 	}
 	
 	
+	
 	public Collection<Event> getEvents(){
-		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
+		try(Transaction tx = eventRepositoryBean.getGraphDatabaseServices().beginTx()){
 			Collection<Event> findAll = eventRepositoryBean.findAll();
+			if(findAll != null){
+				for (Event event : findAll) {
+					event.setAroundEventsNumber(eventRepositoryBean.countHits(event.getLatitude(), event.getLongitude()));
+				}
+			}
 			tx.success();
 			return findAll;
+		}catch(Throwable t){
+			log.error("Error", t);
+		}
+		return null;
+		
+	}
+	
+	public Event getEvent(long id){
+		try(Transaction tx = eventRepositoryBean.getGraphDatabaseServices().beginTx()){
+			Event event = eventRepositoryBean.findEvent(id);
+			event.setAroundEventsNumber(eventRepositoryBean.countHits(event.getLatitude(), event.getLongitude()));
+			tx.success();
+			return event;
 		}catch(Throwable t){
 			log.error("Error", t);
 		}
@@ -82,6 +101,11 @@ public class EventServiceBean extends ServiceBean {
 	public Collection<Event> getEvents(long from, long to, boolean asc){
 		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
 			Collection<Event> findAll = eventRepositoryBean.findAllPaginate(from, to, asc);
+			if(findAll != null){
+				for (Event event : findAll) {
+					event.setAroundEventsNumber(eventRepositoryBean.countHits(event.getLatitude(), event.getLongitude()));
+				}
+			}
 			tx.success();
 			return findAll;
 		}catch(Throwable t){
@@ -94,6 +118,11 @@ public class EventServiceBean extends ServiceBean {
 	public Collection<Event> getEvents(long from, long to){
 		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
 			Collection<Event> findAll = eventRepositoryBean.findAllPaginate(from, to, false);
+			if(findAll != null){
+				for (Event event : findAll) {
+					event.setAroundEventsNumber(eventRepositoryBean.countHits(event.getLatitude(), event.getLongitude()));
+				}
+			}
 			tx.success();
 			return findAll;
 		}catch(Throwable t){
@@ -106,6 +135,11 @@ public class EventServiceBean extends ServiceBean {
 	public Collection<Event> getEvents(double latitude, double longitude, double distance){
 		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
 			Collection<Event> findAll = eventRepositoryBean.findByDistance(latitude, longitude, distance);
+			if(findAll != null){
+				for (Event event : findAll) {
+					event.setAroundEventsNumber(eventRepositoryBean.countHits(event.getLatitude(), event.getLongitude()));
+				}
+			}
 			tx.success();
 			return findAll;
 		}catch(Throwable t){
@@ -118,6 +152,11 @@ public class EventServiceBean extends ServiceBean {
 	public Collection<Event> getEvents(double latitude, double longitude, double distance, long from, long to){
 		try(Transaction tx = userRepositoryBean.getGraphDatabaseServices().beginTx()){
 			Collection<Event> findAll = eventRepositoryBean.findByDistancePaginate(latitude, longitude, distance, from, to);
+			if(findAll != null){
+				for (Event event : findAll) {
+					event.setAroundEventsNumber(eventRepositoryBean.countHits(event.getLatitude(), event.getLongitude()));
+				}
+			}
 			tx.success();
 			return findAll;
 		}catch(Throwable t){

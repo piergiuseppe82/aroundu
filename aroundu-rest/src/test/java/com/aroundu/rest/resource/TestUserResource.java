@@ -60,14 +60,22 @@ public class TestUserResource extends TestResource {
 		Assert.assertTrue(user != null);
 	}
 	
+	
+	
 	@Test
-	public void testToken(){
+	public void testRegistrationGoogle(){
+		if(GOOGLE_TOKEN.isEmpty())return;//SKIP TEST WHEN TOKEN NOT SETTED
 		WebTarget target = client.target(getBaseURI());
-		Response response = target.path("users").path("example").request()
-				.header(ResponseHeaderFilter.X_AUTH_TOKEN, "jhgasjdghjlawufcduuua73862478qgdgdqdhhaqdahdUISHDUHW").accept(MediaType.APPLICATION_JSON)
-				.get();
+		User user = makeFakeUser("testUserProfile"+System.currentTimeMillis());
+		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);
+
 		
+		Response response = target.path("users").request().header(ResponseHeaderFilter.X_AUTH_TOKEN, GOOGLE_TOKEN).accept(MediaType.APPLICATION_JSON)
+				.post(entity);
+		log.debug(Status.fromStatusCode(response.getStatus()).toString());
+		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
 		Assert.assertTrue(response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN)!= null);
+		
 	}
 	
 	@Test
@@ -87,6 +95,7 @@ public class TestUserResource extends TestResource {
 	
 	@Test
 	public void testGetUserProfile(){
+		
 		WebTarget target = client.target(getBaseURI());
 		User user = makeFakeUser("testUserProfile"+System.currentTimeMillis());
 		Entity<User> entity = Entity.entity(user, MediaType.APPLICATION_JSON);
@@ -106,7 +115,6 @@ public class TestUserResource extends TestResource {
 		log.debug(Status.fromStatusCode(response.getStatus()).toString());
 		
 		Assert.assertTrue(Status.OK.equals(Status.fromStatusCode(response.getStatus())));
-		token = response.getHeaderString(ResponseHeaderFilter.X_AUTH_TOKEN);
 		Assert.assertTrue(token!= null);
 		user = response.readEntity(User.class);
 		log.debug(""+user);

@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -32,16 +33,31 @@ public class EventsResource extends AbstractAppResource{
 	Logger log = LoggerFactory.getLogger(EventsResource.class);
 	@Context HttpServletRequest req;
 	
+   
     @GET
     @Produces({MediaType.APPLICATION_JSON})  //add MediaType.APPLICATION_XML if you want XML as well (don't forget @XmlRootElement)
-    public Response getEvents(){
+    public Response getEvents(@QueryParam("from") Long from,@QueryParam("to") Long to,@QueryParam("position") String posistion, @QueryParam("distance") Double distance){
+    	log.debug("Called GET - Events");
     	getAuthorizedUser(req);
     	try {
-			Collection<Event> events = eventServiceBean.getEvents();
+    		Collection<Event> events = null;
+    		if(posistion != null && distance!=null && from !=null && to !=null){
+    			String[] split = posistion.split(",");    			
+    			events = eventServiceBean.getEvents(new Double(split[0]), new Double(split[1]), distance,from,to);
+    		}else if(posistion != null && distance!=null){
+    			String[] split = posistion.split(",");    			
+    			events = eventServiceBean.getEvents(new Double(split[0]), new Double(split[1]), distance);
+    		}else if(from !=null && to !=null){
+    			events = eventServiceBean.getEvents(from,to);
+    		}else if(posistion == null && distance==null && from ==null && to ==null){
+    			events = eventServiceBean.getEvents();
+    		}    		
 			if(events != null){
+				log.debug("Events found");
 				GenericEntity<Collection<Event>> list = new GenericEntity<Collection<Event>>(events) {};
 				return Response.ok(list).build();
 			}else{
+				log.debug("Events not found");
 				return Response.status(Status.NOT_FOUND).build();
 			}
 		} catch (Exception e) {
@@ -69,7 +85,7 @@ public class EventsResource extends AbstractAppResource{
     		event.setTitle("TitleEvent");
     		event.setAddress("fortyfive");
     		event.setAroundEventsNumber(10L);
-    		event.setLikesNumber(10L);
+    		event.setHangsNumber(10L);
     		event.setCreationTime(System.currentTimeMillis());
 			event.setUpdateTime(System.currentTimeMillis());
 			
@@ -90,7 +106,6 @@ public class EventsResource extends AbstractAppResource{
     		like3.setDisplayName("Userlike3");
     		like3.setThumbnail("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
     		likes.add(like3);
-    		event.setLikes(likes);
 			
     		Collection<Event> aroundEvents = new ArrayList<Event>();
     		Event event2 = new Event();
@@ -126,8 +141,7 @@ public class EventsResource extends AbstractAppResource{
     		event4.setEventImageUrl("http://it.wikipedia.org/wiki/Google#/media/File:Googlelogo1997.jpg");
     		event4.setTitle("TitleEvent4");
     		aroundEvents.add(event4);
-    		event.setAroundEvents(aroundEvents);
-			return Response.ok(event).build();
+    		return Response.ok(event).build();
 		} catch (Exception e) {
 			log.error("Error",e);
 			return Response.serverError().build();
@@ -139,15 +153,18 @@ public class EventsResource extends AbstractAppResource{
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response createEvent(Event event, @Context HttpServletRequest req) throws Exception{
+    	log.debug("Called POST - Events");
 		User authorizedUser = getAuthorizedUser(req);
 		try {
+			log.debug("User "+authorizedUser.getUsername()+" try to create event");
 			event.setAuthor(authorizedUser);
 			Event eventNew = eventServiceBean.addEvent(event);
 			if(eventNew != null){
+				log.debug("User "+authorizedUser.getUsername()+" new event created!");
 				URI location = new URI("/events/"+eventNew.getId());
 				return Response.created(location).build();
 			}else{
-				req.getSession().invalidate();
+				log.debug("User "+authorizedUser.getUsername()+" event not created");
 				return  Response.status(Status.NOT_ACCEPTABLE).build();
 			}
 		} catch (Exception e) {

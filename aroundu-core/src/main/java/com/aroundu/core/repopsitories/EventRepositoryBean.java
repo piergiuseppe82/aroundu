@@ -10,6 +10,7 @@ import org.neo4j.graphdb.Result;
 
 import com.aroundu.core.infrastructure.RepositoryBean;
 import com.aroundu.core.model.Event;
+import com.aroundu.core.model.User;
 import com.aroundu.core.supports.RepoAssemblers;
 
 /**
@@ -60,6 +61,15 @@ public class EventRepositoryBean extends RepositoryBean{
 		return pList;
 	}
 	
+	public long countHits(Double latitute, Double longitude) {
+		
+		Result execute = getGraphDatabaseServices().execute("START n=node:geom('withinDistance:["+latitute+","+longitude+","+0.3+"]') RETURN n");
+		Collection<Event> pList = RepoAssemblers.toEventCollection(execute,latitute, longitude);
+		if(pList != null && !pList.isEmpty())
+			return pList.size()-1;
+		return 0;
+	}
+	
 	public Collection<Event> findByDistancePaginate(Double latitute, Double longitude, Double dist,long from, long to) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("from", from);
@@ -67,6 +77,23 @@ public class EventRepositoryBean extends RepositoryBean{
 		Result execute = getGraphDatabaseServices().execute("START n=node:geom('withinDistance:["+latitute+","+longitude+","+dist+"]') RETURN n SKIP {from} LIMIT {to}",map);
 		Collection<Event> pList = RepoAssemblers.toEventCollection(execute,latitute, longitude);
 		return pList;
+	}
+
+
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public Event findEvent(long id) {
+	
+			Node nodeById = getGraphDatabaseServices().getNodeById(id);
+			if(nodeById != null){
+				Event p = new Event();
+				RepoAssemblers.nodeToBean(nodeById, p);
+				return p;
+			}return null;
+	
 	}
 
 	
